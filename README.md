@@ -83,28 +83,48 @@ pnpm dlx create-turbo@latest -e https://github.com/craftzcode/create-craftzcode
 pnpm dlx create-turbo@latest create-craftzcode
 ```
 
-2. **Update Dependencies**
+2. **Update Package Manager & Dependencies**
 
-```shell
-pnpm up --recursive
-```
+- **Update the Package Manager Version**
+
+  - Open the root `package.json` and change the `"packageManager"` field from `"pnpm@latest"` to `"pnpm@latest"`.
+
+  ```json
+  {
+    // ... other settings
+    "packageManager": "pnpm@latest"
+    // ... other settings
+  }
+  ```
+
+  - Reinstall Dependencies
+
+  ```shell
+  pnpm install
+  ```
+
+- **Update All Dependencies Across the Workspace**
+
+  ```shell
+  pnpm up --recursive
+  ```
 
 - Git Commit
 
-```
-git commit -m "chore(deps): bump dependencies across workspace"
-```
+  ```shell
+  git commit -m "chore(deps): update dependencies across workspace and package manager"
+  ```
 
 3. **Set Up GitHub Repository**
 
 - Create a new repository named `create-craftzcode` on GitHub
 - Initialize and push your local repository:
 
-```shell
-git remote add origin git@github.com:craftzcode/create-craftzcode.git
-git branch -M main
-git push -u origin main
-```
+  ```shell
+  git remote add origin git@github.com:craftzcode/create-craftzcode.git
+  git branch -M main
+  git push -u origin main
+  ```
 
 4. **Rename Workspace & Configure TypeScript & ESLint**
 
