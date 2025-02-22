@@ -108,16 +108,24 @@ git push -u origin main
 
 4. **Rename Workspace & Configure TypeScript & ESLint**
 
-- Before applying these changes, create and switch to a new branch:
-  ```shell
-  git checkout -b frontend/feature/1-rename-and-config
-  ```
-- **Rename Package Imports:**
+- **Git Branch**
+  - Create a new branch for renaming the workspace and configuring TypeScript & ESLint.
+    ```shell
+    git checkout -b frontend/feature/1-rename-and-config
+    ```
+  - Pull Request Title
+    ```
+    feat(frontend): rename workspace and configure TS/ESLint
+    ```
+- **Rename Package Imports**
+
   - Rename all instances of `@craftzcode` to `@craftzcode` in the project. This ensures that imports will look like `@craftzcode/ui`.
   - Git Commit
+
     ```
     git commit -m "refactor: rename package namespace from "@craftzcode" to "@craftzcode""
     ```
+
 - **Configure TypeScript & ESLint**
   - Create a new folder named `config` in the root of your project.
   - Move the `typescript-config` and `eslint-config` into the `config` folder.
