@@ -113,10 +113,10 @@ git push -u origin main
   git checkout -b frontend/feature/1-rename-and-config
   ```
 - **Rename Package Imports:**
-  - Rename all instances of `@repo` to `@craftzcode` in the project. This ensures that imports will look like `@craftzcode/ui`.
+  - Rename all instances of `@craftzcode` to `@craftzcode` in the project. This ensures that imports will look like `@craftzcode/ui`.
   - Git Commit
     ```
-    git commit -m "refactor: rename package namespace from "@repo" to "@craftzcode""
+    git commit -m "refactor: rename package namespace from "@craftzcode" to "@craftzcode""
     ```
 - **Configure TypeScript & ESLint**
   - Create a new folder named `config` in the root of your project.
