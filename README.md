@@ -90,9 +90,9 @@ pnpm dlx create-turbo@latest create-craftzcode
 
     ```json
     {
-      // ... other settings
-      "packageManager": "pnpm@10.4.1" // or the latest version
-      // ... other settings
+        // ... other settings
+        "packageManager": "pnpm@10.4.1" // or the latest version
+        // ... other settings
     }
     ```
 
