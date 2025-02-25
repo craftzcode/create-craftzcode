@@ -163,13 +163,21 @@ pnpm dlx create-turbo@latest create-craftzcode
   │   ├── prettier-config/
   │   │   ├── index.js
   │   │   └── package.json
-  │   ├── tailwind-config/
-  │   │   ├── package.json
-  │   │   ├── postcss.config.mjs
-  │   │   └── style.css
+  │   └── tailwind-config/
+  │       ├── package.json
+  │       ├── postcss.config.mjs
+  │       └── style.css
   ├── packages/
-  │   └── ui/ (will contain shadcn-ui  configuration later)
-  └── ... other project files
+  │   └── ui/                (shared shadcn-ui package)
+  │       ├── package.json
+  │       ├── tsconfig.json
+  │       └── src/
+  │           ├── lib/
+  │           │   └── utils.ts
+  │           ├── components/ (all existing components here should be deleted)
+  │           └── hooks/  (if any)
+  ├── turbo.json  (with additional commands: ui-add & clean)
+  └── package.json  (root, with shared scripts)
   ```
 
 - **Git Branch**
@@ -204,16 +212,16 @@ pnpm dlx create-turbo@latest create-craftzcode
     }
     ```
     **Explanations**
-      - `"exports": { ".": "./index.js" }`
+      - `"exports"`
       
-        This field defines the entry point of the package. When another package imports @craftzcode/prettier-config, it will resolve to the index.js file.
+        This field defines the entry point of the package. When another package imports `@craftzcode/prettier-config`, it will resolve to the index.js file.
         
         **Example Usage**
         ```js
         import config from '@craftzcode/prettier-config'
         ```
 
-      - `"scripts": { ... }`
+      - `"scripts"`
         - `"lint": "next lint --max-warnings 0"`
 
           A shortcut command to run linting with strict settings.
@@ -222,13 +230,13 @@ pnpm dlx create-turbo@latest create-craftzcode
           
           A command to clean up caches and node modules for a fresh install.
 
-      - `"devDependencies": { "@craftzcode/eslint-config": "workspace:*" }`
-
-        This adds the shared ESLint configuration as a dev dependency from your workspace. Even if `eslint` is already installed in your shared `eslint-config`, adding it here ensures that the Prettier config package is aware of and can leverage the ESLint rules, especially for projects that might use this package standalone.
+      - `"devDependencies"`
+      
+        The workspace dependencies (`workspace:*`) ensure that shared configurations for ESLint, Prettier, Tailwind, and TypeScript are used from the monorepo. Even if ESLint or TypeScript are installed in a shared config, including them here ensures that this package can run its commands independently.
 
       - `"prettier": "@craftzcode/prettier-config"`
 
-        This field tells Prettier which configuration package to use. It ensures consistency across your projects by pointing to your shared Prettier configuration.
+        Specifies that the package should use the shared Prettier configuration for consistent code formatting
     
   - Install Prettier and Plugins
     ```shell
@@ -343,7 +351,7 @@ pnpm dlx create-turbo@latest create-craftzcode
     }
     ```
     **Explanations**
-      - `"exports": { "./style.css": "./style.css", "./postcss.config.mjs": "./postcss.config.mjs" }`
+      - `"exports"`
 
         This field defines subpath exports for the package. It allows other parts of the project to import these files directly.
 
@@ -354,7 +362,7 @@ pnpm dlx create-turbo@latest create-craftzcode
         // or require('@craftzcode/tailwind-config/postcss.config.mjs')
         ```
 
-      - `"scripts": { ... }`
+      - `"scripts"`
         - `"lint": "next lint --max-warnings 0"`
 
           A shortcut command to run linting with strict settings.
@@ -363,9 +371,14 @@ pnpm dlx create-turbo@latest create-craftzcode
           
           A command to clean up caches and node modules for a fresh install.
 
-        - `"prettier": "@craftzcode/prettier-config"`
+      - `"devDependencies"`
+      
+        The workspace dependencies (`workspace:*`) ensure that shared configurations for ESLint, Prettier, Tailwind, and TypeScript are used from the monorepo. Even if ESLint or TypeScript are installed in a shared config, including them here ensures that this package can run its commands independently.
 
-          This field tells tools that use Prettier which configuration package to apply. It helps maintain uniform code formatting across your project.
+      - `"prettier": "@craftzcode/prettier-config"`
+
+        Specifies that the package should use the shared Prettier configuration for consistent code formatting.
+
 
   - Install Tailwind Dependencies
     ```shell
@@ -582,6 +595,241 @@ pnpm dlx create-turbo@latest create-craftzcode
   - Git Commit
     ```shell
     git commit -m "feat(tailwind-config): add shared Tailwind configuration with PostCSS and style setup"
+    ```
+
+- **Setup Shared shadcn-ui**
+  - Delete all files inside the `packages/ui/src/components` folder to prepare for shadcn-ui’s generated components.
+  - Replace the contents of `packages/ui/package.json` with the following code
+    ```json
+    {
+      "name": "@craftzcode/ui",
+      "version": "0.0.0",
+      "private": true,
+      "exports": {
+        "./lib/*": "./src/lib/*.ts",
+        "./components/*": "./src/components/*.tsx",
+        "./hooks/*": "./src/hooks/*.ts"
+      },
+      "scripts": {
+        "ui-add": "pnpm dlx shadcn@canary add",
+        "postui-add": "prettier src --write --list-different",
+        "generate:component": "turbo gen react-component",
+        "lint": "eslint . --max-warnings 0",
+        "clean": "git clean -xdf .cache .turbo node_modules",
+        "check-types": "tsc --noEmit",
+      },
+      "dependencies": {
+        "react": "^19.0.0",
+        "react-dom": "^19.0.0"
+      },
+      "devDependencies": {
+        "@craftzcode/eslint-config": "workspace:*",
+        "@craftzcode/prettier-config": "workspace:*",
+        "@craftzcode/tailwind-config": "workspace:*",
+        "@craftzcode/typescript-config": "workspace:*",
+        "@turbo/gen": "^2.4.2",
+        "@types/node": "^22.13.5",
+        "@types/react": "19.0.8",
+        "@types/react-dom": "19.0.3",
+        "eslint": "^9.21.0",
+        "typescript": "5.7.3"
+      },
+      "prettier": "@craftzcode/prettier-config"
+    }
+    ```
+    **Explanations**
+      - `"exports"`
+
+        Defines the public API of the package. For example, importing from `@craftzcode/ui/lib/someUtil` will resolve to the corresponding TypeScript file in `src/lib`.
+
+        **Example Usage**
+        ```js
+        import { cn } from '@craftzcode/ui/lib/utils'
+        ```
+
+      - `"scripts"`
+        - `"ui-add": "pnpm dlx shadcn@canary add"`
+
+          A command to add a new UI component using Shadcn UI.
+
+        - `"postui-add": "prettier src --write --list-different"`
+
+          A command to format the code using Prettier.
+
+        - `"generate:component": "turbo gen react-component"`
+
+          A shortcut command to generate a new React component using Turborepo’s built-in generator.
+
+        - `"lint": "eslint . --max-warnings 0"`
+
+          A shortcut command to run linting with strict settings.
+
+        - `"clean": "git clean -xdf .cache .turbo node_modules"`
+
+          A command to clean up caches and node modules for a fresh install.
+
+        - `"check-types": "tsc --noEmit"`
+
+          A shortcut command to run type checking with strict settings.
+    
+      - `"devDependencies"`
+      
+        The workspace dependencies (`workspace:*`) ensure that shared configurations for ESLint, Prettier, Tailwind, and TypeScript are used from the monorepo. Even if ESLint or TypeScript are installed in a shared config, including them here ensures that this package can run its commands independently.
+
+      - `"prettier": "@craftzcode/prettier-config"`
+
+        Specifies that the package should use the shared Prettier configuration for consistent code formatting.
+
+  - Install shadcn-ui additional dependencies
+    ```shell
+    pnpm --filter @craftzcode/ui add class-variance-authority clsx tailwind-merge lucide-react
+    ```
+
+    **Explanations**
+      - `pnpm --filter`
+
+        When you run a command with `pnpm --filter <package>`, it targets a specific package within your monorepo. For example, `pnpm --filter @craftzcode/ui add ...` installs dependencies only in the `@craftzcode/ui` package.
+  
+  - Edit (or create) the `tsconfig.json` file inside `packages/ui` with the following content.
+    ```json
+    {
+      "extends": "@craftzcode/typescript-config/    react-library.json",
+      "compilerOptions": {
+        "baseUrl": ".",
+        "paths": {
+          "@craftzcode/ui/*": ["./src/*"]
+        }
+      },
+      "include": ["."],
+      "exclude": ["node_modules", "dist"]
+    }
+    ```
+
+    **Explanation**
+      - `"extends": "@craftzcode/typescript-config/react-library.json"`
+
+        Inherits TypeScript settings from a shared configuration tailored for React libraries.
+
+      - `"baseUrl": "."`
+
+        Specifies that the package should use the current directory as the base directory for resolving relative paths.
+
+      - `"paths":`
+
+        Configures path aliases for TypeScript imports.
+
+      - `"@craftzcode/ui/*": ["./src/*"]`
+
+        Maps the `@craftzcode/ui` package to the `src` directory within the package.
+
+      - `"include": ["."]`
+
+        Specifies that the package should include the current directory as part of its build.
+
+      - `"exclude": ["node_modules", "dist"]`
+
+        Excludes specific directories from the build.
+
+      **Example Usage**
+
+        ```js
+        import { cn } from '@craftzcode/ui/lib/utils'
+        ```
+
+  - Inside `packages/ui/src/lib`, create a file named `utils.ts` with the following content.
+
+    ```ts
+    import type { ClassValue } from 'clsx'
+    import { clsx } from 'clsx'
+    import { twMerge } from 'tailwind-merge'
+
+    export function cn(...inputs: ClassValue[]) {
+      return twMerge(clsx(inputs))
+    }
+    ```
+
+    **Explanation**
+
+      This utility function, `cn`, combines the power of the `clsx` library (which conditionally joins class names) with `tailwind-merge` (which intelligently merges Tailwind CSS classes). This ensures that your component class names are both concise and conflict-free.
+
+  - Inside the `packages/ui` folder, create a file named `components.json` with the following content.
+
+    ```json
+    {
+      "$schema": "https://ui.shadcn.com/schema.   json",
+      "style": "new-york",
+      "rsc": true,
+      "tsx": true,
+      "tailwind": {
+        "config": "",
+        "css": "../../config/tailwind-config/   style.css",
+        "baseColor": "neutral",
+        "cssVariables": true,
+        "prefix": ""
+      },
+      "aliases": {
+        "components": "@craftzcode/ui/components",
+        "utils": "@craftzcode/ui/lib/utils",
+        "ui": "@craftzcode/ui/components",
+        "lib": "@craftzcode/ui/lib",
+        "hooks": "@craftzcode/ui/hooks"
+      },
+      "iconLibrary": "lucide"
+    }
+    ```
+
+  - Add the following scripts to your root `package.json`.
+
+    ```json
+    {
+      "scripts": {
+        "ui-add": "turbo run ui-add -F    @craftzcode/ui --",
+        "clean": "git clean -xdf node_modules",
+        "clean:workspaces": "turbo run clean"
+      }
+    }
+    ```
+
+    **Explanation**
+
+      - `"ui-add": "turbo run ui-add -F @craftzcode/ui --"`
+
+        This script runs the `ui-add` command (defined in the `@craftzcode/ui` package) using Turbo. The `-F @craftzcode/ui` flag filters the run to that specific package, and the `--` separator ensures any additional arguments are passed directly to the `ui-add` command.
+
+      - `"clean:workspaces": "turbo run clean"`
+
+        Executes the `clean` script across all workspaces via Turbo.
+
+    - Add the following entries to your turbo.json.
+
+      ```json
+      {
+        "tasks": {
+          "ui-add": {
+            "cache": false,
+            "interactive": true
+          },
+          "clean": {
+            "cache": false
+          }
+        }
+      }
+      ```
+
+      **Explanation**
+
+        - `"ui-add"` in Turbo.
+
+          Disables caching (`"cache": false`) to ensure the UI generator always runs interactively (using `"interactive": true`). This is useful because generating UI components often requires user input or prompts.
+
+        - `"clean"` in Turbo.
+
+          Disables caching for the `clean` command so that it always performs a fresh cleanup across all workspaces.
+
+  - Git Commit
+
+    ```shell
+    git commit -m "feat(shadcn-ui): setup shared shadcn-ui package"
     ```
 
 ## Project Configuration
