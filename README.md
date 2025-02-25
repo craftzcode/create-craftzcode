@@ -88,18 +88,18 @@ pnpm dlx create-turbo@latest create-craftzcode
 - **Update the Package Manager Version**
   - Open the root `package.json` and change the `"packageManager"` field from `"pnpm@latest"` to `"pnpm@latest"`.
 
-  ```json
-  {
-    // ... other settings
-    "packageManager": "pnpm@10.4.1" // or the latest version
-    // ... other settings
-  }
-  ```
+    ```json
+    {
+      // ... other settings
+      "packageManager": "pnpm@10.4.1" // or the latest version
+      // ... other settings
+    }
+    ```
 
   - Reinstall Dependencies
-  ```shell
-  pnpm install
-  ```
+    ```shell
+    pnpm install
+    ```
 
 - **Update All Dependencies Across the Workspace**
   ```shell
