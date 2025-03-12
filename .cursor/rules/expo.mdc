@@ -1,0 +1,10 @@
+---
+description: Expo Best Practices
+globs: apps/expo/**/*.(ts|tsx)
+alwaysApply: false
+---
+- Prefer functional components with React Hooks
+- Levarage EXPO SDK features and APIs effectively
+- Use Expo Router for structured and navigation
+- Manage assets efficiently with Expo's asset system (images, fonts, etc.)
+- Use Reanimated for performant animations

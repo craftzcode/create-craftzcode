@@ -1,0 +1,12 @@
+---
+description: Hono.js best practices for building APIs and middleware
+globs: packages/api/**/*.(ts|tsx)
+alwaysApply: false
+---
+- Use middleware for authentication and logging
+- Implement route handler using `app.get`, `app.post`, etc.
+- Utilize `c.env` for environment variables in Cloudflare Workers
+- Structure routes modularly for maintainability
+- Hanlde errors globally with `app.onError`
+- Use `c.text()`, `c.json()`, and `c.redirect()` for response handling
+- Leverage caching with `Cache-Control` or KV storage
