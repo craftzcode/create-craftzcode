@@ -111,7 +111,23 @@ pnpm dlx create-turbo@latest create-craftzcode
   git commit -m "chore(deps): update dependencies across workspace and package manager"
   ```
 
-3. **Set Up GitHub Repository**
+3. **Delete Docs & Web Boilerplates**
+
+-  Delete `page.module.css` and delete all code in `page.tsx` both `docs & web`
+-  Git Commit
+   ```shell
+   git commit -m "refactor(docs|web): delete bolierplates"
+   ```
+
+4. **Add Cursor Rules**
+
+-  Copy my `.cursor/rules/{rules}.mdc`
+-  Git Commit
+   ```shell
+   git commit -m "chore(cursorrules): add cursor rules"
+   ```
+
+5. **Set Up GitHub Repository**
 
 - Create a new repository named `create-craftzcode` on GitHub
 - Initialize and push your local repository:
@@ -122,7 +138,7 @@ pnpm dlx create-turbo@latest create-craftzcode
   git push -u origin main
   ```
 
-4. **Rename Workspace & Configure TypeScript & ESLint**
+6. **Rename Workspace & Configure TypeScript & ESLint**
 
 - **Git Branch**
   - Create a new branch for renaming the workspace and configuring TypeScript & ESLint.
@@ -154,7 +170,7 @@ pnpm dlx create-turbo@latest create-craftzcode
     git commit -m  "chore(config): setup config folder for TypeScript & ESLint"
     ```
 
-5. **Setup Prettier, Tailwind CSS, and Shadcn UI Shared Configs**
+7. **Setup Prettier, Tailwind CSS, and Shadcn UI Shared Configs**
 
 - **Overview File Structure**
   ```
