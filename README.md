@@ -709,7 +709,7 @@ pnpm dlx create-turbo@latest create-craftzcode
   - Edit (or create) the `tsconfig.json` file inside `packages/ui` with the following content.
     ```json
     {
-      "extends": "@craftzcode/typescript-config/    react-library.json",
+      "extends": "@craftzcode/typescript-config/react-library.json",
       "compilerOptions": {
         "baseUrl": ".",
         "paths": {
