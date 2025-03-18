@@ -134,7 +134,7 @@ pnpm dlx create-turbo@latest create-craftzcode
     feat(frontend): rename workspace and configure TS/ESLint
     ```
 - **Rename Package Imports**
-  - Rename all instances of `@craftzcode` to `@craftzcode` in the project. This ensures that imports will look like `@craftzcode/ui`.
+  - Rename all instances of `@repo` to `@craftzcode` in the project. This ensures that imports will look like `@craftzcode/ui`.
   - Git Commit
 
     ```
