@@ -124,7 +124,7 @@ pnpm dlx create-turbo@latest create-craftzcode
 -  Copy my `.cursor/rules/{rules}.mdc`
 -  Git Commit
    ```shell
-   git commit -m "chore(cursorrules): add cursor rules"
+   git commit -m "chore(.cursor): add cursor rules"
    ```
 
 5. **Set Up GitHub Repository**
@@ -167,7 +167,7 @@ pnpm dlx create-turbo@latest create-craftzcode
     ```
   - Git Commit
     ```shell
-    git commit -m  "chore(config): setup config folder for TypeScript & ESLint"
+    git commit -m "chore(config): setup config folder for TypeScript & ESLint"
     ```
 
 7. **Setup Prettier, Tailwind CSS, and Shadcn UI Shared Configs**
@@ -184,7 +184,7 @@ pnpm dlx create-turbo@latest create-craftzcode
   │       ├── postcss.config.mjs
   │       └── style.css
   ├── packages/
-  │   └── ui/                (shared shadcn-ui package)
+  │   └── ui/ (shared shadcn-ui package)
   │       ├── package.json
   │       ├── tsconfig.json
   │       └── src/
@@ -192,8 +192,8 @@ pnpm dlx create-turbo@latest create-craftzcode
   │           │   └── utils.ts
   │           ├── components/ (all existing components here should be deleted)
   │           └── hooks/  (if any)
-  ├── turbo.json  (with additional commands: ui-add & clean)
-  └── package.json  (root, with shared scripts)
+  ├── turbo.json (with additional commands: ui-add & clean)
+  └── package.json (root, with shared scripts)
   ```
 
 - **Git Branch**
@@ -361,7 +361,7 @@ pnpm dlx create-turbo@latest create-craftzcode
       "devDependencies": {
         "@craftzcode/eslint-config": "workspace:*",
         "@craftzcode/prettier-config": "workspace:*",
-        "eslint": "^9.21.0"
+        "eslint": "^9.22.0"
       },
       "prettier": "@craftzcode/prettier-config"
     }
@@ -374,7 +374,7 @@ pnpm dlx create-turbo@latest create-craftzcode
         **Example Usage**
 
         ```js
-        import " @craftzcode/tailwind-config/style.css"
+        import "@craftzcode/tailwind-config/style.css"
         // or require('@craftzcode/tailwind-config/postcss.config.mjs')
         ```
 
