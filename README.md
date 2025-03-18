@@ -627,7 +627,7 @@ pnpm dlx create-turbo@latest create-craftzcode
         "./hooks/*": "./src/hooks/*.ts"
       },
       "scripts": {
-        "ui-add": "pnpm dlx shadcn@canary add",
+        "ui-add": "pnpm dlx shadcn@latest add",
         "postui-add": "prettier src --write --list-different",
         "generate:component": "turbo gen react-component",
         "lint": "eslint . --max-warnings 0",
@@ -643,12 +643,12 @@ pnpm dlx create-turbo@latest create-craftzcode
         "@craftzcode/prettier-config": "workspace:*",
         "@craftzcode/tailwind-config": "workspace:*",
         "@craftzcode/typescript-config": "workspace:*",
-        "@turbo/gen": "^2.4.2",
-        "@types/node": "^22.13.5",
-        "@types/react": "19.0.8",
-        "@types/react-dom": "19.0.3",
-        "eslint": "^9.21.0",
-        "typescript": "5.7.3"
+        "@turbo/gen": "^2.4.4",
+        "@types/node": "^22.13.10",
+        "@types/react": "19.0.10",
+        "@types/react-dom": "19.0.4",
+        "eslint": "^9.22.0",
+        "typescript": "5.8.2"
       },
       "prettier": "@craftzcode/prettier-config"
     }
