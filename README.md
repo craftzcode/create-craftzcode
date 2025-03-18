@@ -268,10 +268,10 @@ pnpm dlx create-turbo@latest create-craftzcode
 
     ```js
     /** @typedef {import("prettier").Config} PrettierConfig */
-    /** @typedef {import("prettier-plugin-tailwindcss").      PluginOptions} TailwindConfig */
-    /** @typedef {import("@ianvs/prettier-plugin-sort-imports").      PluginConfig} SortImportsConfig */
+    /** @typedef {import("prettier-plugin-tailwindcss").PluginOptions} TailwindConfig */
+    /** @typedef {import("@ianvs/prettier-plugin-sort-imports").PluginConfig} SortImportsConfig */
 
-    /** @type { PrettierConfig | SortImportsConfig |      TailwindConfig } */
+    /** @type {PrettierConfig|SortImportsConfig|TailwindConfig} */
     const config = {
       arrowParens: 'avoid',
         bracketSpacing: true,
@@ -296,10 +296,10 @@ pnpm dlx create-turbo@latest create-craftzcode
           '<THIRD_PARTY_MODULES>',
           '',
           // First group: trpc and tanstack imports
-          '^(@trpc/(.*)$)|^(@trpc$)|^(@tanstack/(.*)$)|^(@tanstack$)      ',
+          '^(@trpc/(.*)$)|^(@trpc$)|^(@tanstack/(.*)$)|^(@tanstack$)',
           '',
           // Second group: drizzle-orm and @/db imports
-          '^(drizzle-orm/(.*)$)|^(drizzle-orm$)|^(@/db/(.*)$)|^(@/      db$)',
+          '^(drizzle-orm/(.*)$)|^(drizzle-orm$)|^(@/db/(.*)$)|^(@/db$)',
           '',
           '^@craftzcode/api/(.*)$',
           '',
@@ -329,7 +329,7 @@ pnpm dlx create-turbo@latest create-craftzcode
         importOrderSeparation: false,
         importOrderSortSpecifiers: true,
         importOrderBuiltinModulesToTop: true,
-        importOrderParserPlugins: ['typescript', 'jsx',       'decorators-legacy'],
+        importOrderParserPlugins: ['typescript','jsx','decorators-legacy'],
         importOrderMergeDuplicateImports: true,
         importOrderCombineTypeAndValueImports: true
       }
