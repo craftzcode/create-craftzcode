@@ -138,7 +138,7 @@ pnpm dlx create-turbo@latest create-craftzcode
   - Git Commit
 
     ```
-    git commit -m "refactor: rename package namespace from "@craftzcode" to "@craftzcode""
+    git commit -m "refactor: rename package namespace from @repo to @craftzcode"
     ```
 
 - **Configure TypeScript & ESLint**
