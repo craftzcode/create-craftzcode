@@ -462,7 +462,19 @@ config
           }
         }
         ```
+  
+      - Add all shadcn components.
+        - CLI: `bun run ui-add`
+        - Select all.
+  
       - GIT COMMIT: `git commit -m "chore(shadcn): remove original files in packages/ui and setup shadcn"`
+  
+      - Add the clean script in all workspace `package.json`.
+        ```json
+        "clean": "git clean -xdf .cache .turbo node_modules"
+        ```
+
+        - GIT COMMIT: `git commit -m "chore(package): add clean script to all workspaces"`
 
     - PULL REQUEST TITLE: `chore(infrastructure): add shared prettier & tailwind configs and setup shadcn in packages/ui`
 
