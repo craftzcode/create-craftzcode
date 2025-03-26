@@ -110,6 +110,8 @@ config
 
 5.  Add Cursor Rules, Rename Workspace, Configure Typescript & Eslint
 
+    - GIT BRANCH: `git checkout -b infrastructure/chore/1-cursor-alias-config`
+      
     - Add Cursor Rules
 
       - Copy all of my cursor rules in `.cursor/rules/{rules}.mdc`.
@@ -129,7 +131,6 @@ config
         - CLI: `bun install`
       - GIT COMMIT: `git commit -m "chore(config): move typescript and eslint configs to config folder"`
 
-    - GIT BRANCH: `git checkout -b infrastructure/chore/1-cursor-alias-config`
     - PULL REQUEST TITLE: `chore(infrastructure): add cursor rules, update aliases, and reorganize configs`
 
 6.  Setup Prettier, Tailwind CSS, and Shadcn UI Shared Configs
@@ -156,6 +157,8 @@ config
     ├── turbo.json (with additional commands: ui-add & clean)
     └── package.json (root, with shared scripts)
     ```
+
+    - GIT BRANCH: `git checkout -b infrastructure/chore/2-shared-config`
 
     - Create the Prettier Config Package
 
@@ -461,7 +464,6 @@ config
         ```
       - GIT COMMIT: `git commit -m "chore(shadcn): remove original files in packages/ui and setup shadcn"`
 
-    - GIT BRANCH: `git checkout -b infrastructure/chore/2-shared-config`
     - PULL REQUEST TITLE: `chore(infrastructure): add shared prettier & tailwind configs and setup shadcn in packages/ui`
 
     - How to use all shared config
