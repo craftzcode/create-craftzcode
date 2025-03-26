@@ -468,10 +468,10 @@ config
 
     - How to use all shared config
       - Prettier Shared Config
-        1. Always add `"@rhu-ii/prettier-config": "*"` in the `devDependencies` of `package.json` where workspace are you currently working on it.
-        2. Always add `"prettier": "@rhu-ii/prettier-config"` in the `package.json` where workspace are you currently working on it.
+        1. Always add `"@craftzcode/prettier-config": "*"` in the `devDependencies` of `package.json` where workspace are you currently working on it.
+        2. Always add `"prettier": "@craftzcode/prettier-config"` in the `package.json` where workspace are you currently working on it.
       - Tailwind CSS Shared Config
-        1. Always add `"@rhu-ii/tailwind-config": "*"` in the `devDependencies` of `package.json` where web apps are you currently working on it.
-        2. Always add `@import "@rhu-ii/tailwind-config/style.css";` in the `globals.css` where web apps are you currently working on it.
+        1. Always add `"@craftzcode/tailwind-config": "*"` in the `devDependencies` of `package.json` where web apps are you currently working on it.
+        2. Always add `@import "@craftzcode/tailwind-config/style.css";` in the `globals.css` where web apps are you currently working on it.
       - Typescript and Eslint Shared Config
-        - Always add `"@rhu-ii/typescript-config": "*"` and `"@rhu-ii/eslint-config": "*"` where workspace are you currently working on it.
+        - Always add `"@craftzcode/typescript-config": "*"` and `"@craftzcode/eslint-config": "*"` where workspace are you currently working on it.
