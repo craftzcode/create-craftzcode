@@ -58,55 +58,57 @@ config
     - Package Manager: `Bun`
     - Update Dependencies in all Workspace: `bun update`
   
-3. Add Husky (Pre-Push) for Automation of Git Push
+2. Protect the main branch
 
-   - CLI: `bun add --dev husky`
-   - Init Husky: `bunx husky init`
-   - Add this script inside of `.husky/pre-commit`.
-     ```sh
-     # Get the current branch name
-     current_branch=$(git rev-parse --abbrev-ref HEAD)
+   - Option 1: Add Husky (Pre-Commit) for Automation of Git Commit
+     - CLI: `bun add --dev husky`
+     - Init Husky: `bunx husky init`
+     - Add this script inside of `.husky/pre-commit`.
+       ```sh
+       # Get the current branch name
+       current_branch=$(git rev-parse --abbrev-ref HEAD)
 
-     if [ "$current_branch" = "main" ]; then
-       echo "Warning: You are about to commit on the 'main' branch."
-       read -p "Would you like to create a new branch for these changes? (y/n): " answer
+       if [ "$current_branch" = "main" ]; then
+         echo "Warning: You are about to commit on the 'main' branch."
+         read -p "Would you like to create a new branch for these changes? (y/n): " answer
 
-       if [ "$answer" = "y" ] || [ "$answer" = "Y" ]; then
-         # Prompt for a new branch name; generate one if none is provided.
-         read -p "Enter the new branch name (or leave empty for a generated name): " new_branch
-         if [ -z "$new_branch" ]; then
-           new_branch="feature-$(date +%Y%m%d%H%M%S)"
-           echo "No branch name provided. Using generated branch name: $new_branch"
+         if [ "$answer" = "y" ] || [ "$answer" = "Y" ]; then
+           # Prompt for a new branch name; generate one if none is provided.
+           read -p "Enter the new branch name (or leave empty for a generated name): " new_branch
+           if [ -z "$new_branch" ]; then
+             new_branch="feature-$(date +%Y%m%d%H%M%S)"
+             echo "No branch name provided. Using generated branch name: $new_branch"
+           fi
+           # Create and switch to the new branch
+           git checkout -b "$new_branch"
+           echo "Switched to new branch '$new_branch'. Please run your commit again on the new branch."
+           exit 1  # Abort the commit so you can commit on the new branch
+         else
+           # Extra security confirmation before committing on main branch
+           echo "You chose to commit on the 'main' branch."
+           read -p "Are you absolutely sure you want to commit on main? Type 'confirm' to proceed: " confirm
+           if [ "$confirm" != "confirm" ]; then
+             echo "Commit aborted. Please create a new branch or type 'confirm' to commit on main."
+             exit 1  # Abort the commit
+           fi
+           echo "Proceeding with commit on 'main'."
          fi
-         # Create and switch to the new branch
-         git checkout -b "$new_branch"
-         echo "Switched to new branch '$new_branch'. Please run your commit again on the new branch."
-         exit 1  # Abort the commit so you can commit on the new branch
-       else
-         # Extra security confirmation before committing on main branch
-         echo "You chose to commit on the 'main' branch."
-         read -p "Are you absolutely sure you want to commit on main? Type 'confirm' to proceed: " confirm
-         if [ "$confirm" != "confirm" ]; then
-           echo "Commit aborted. Please create a new branch or type 'confirm' to commit on main."
-           exit 1  # Abort the commit
-         fi
-         echo "Proceeding with commit on 'main'."
        fi
-     fi
+  
+       exit 0
+       ```
+   - Option 2: Go to the  `Preferences > VS Code Settings` search for the `Git Branch Protection` and add the `main` in the list.
 
-     exit 0
-     ```
-
-2.  Remove Boilerplates
+3.  Remove Boilerplates
 
     - Delete `page.module.css` and all of code inside of `page.tsx` both on `docs and web`.
     - GIT COMMIT: `git commit -m "refactor(docs|web): delete boilerplates"`
 
-3.  Create a Github Repository
+4.  Create a Github Repository
 
     - Add the github repository to the project and push the main branch.
 
-4.  Add Cursor Rules, Rename Workspace, Configure Typescript & Eslint
+5.  Add Cursor Rules, Rename Workspace, Configure Typescript & Eslint
 
     - Add Cursor Rules
 
@@ -130,7 +132,7 @@ config
     - GIT BRANCH: `git checkout -b infrastructure/chore/1-cursor-alias-config`
     - PULL REQUEST TITLE: `chore(infrastructure): add cursor rules, update aliases, and reorganize configs`
 
-5.  Setup Prettier, Tailwind CSS, and Shadcn UI Shared Configs
+6.  Setup Prettier, Tailwind CSS, and Shadcn UI Shared Configs
 
     ```
     craftzcode-stack/
