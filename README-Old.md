@@ -57,6 +57,41 @@ config
     - CLI: `pnpm dlx create-turbo@latest craftzcode-stack`
     - Package Manager: `Bun`
     - Update Dependencies in all Workspace: `bun update`
+  
+3. Add Husky (Pre-Push) for Automation of Git Push
+
+   - CLI: `bun add --dev husky`
+   - Init Husky: `bunx husky init`
+   - Delete the `pre-commit` file inside of `.husky` folder and create a new one named `pre-push` with the following content.
+     ```sh
+     #!/bin/sh
+      . "$(dirname "$0")/_/husky.sh"
+
+      # Get the current branch name
+      current_branch=$(git rev-parse --abbrev-ref HEAD)
+
+      if [ "$current_branch" = "main" ]; then
+        echo "Warning: You are pushing from the 'main' branch."
+        read -p "Would you like to create a new branch for these changes? (y/n): " answer
+      
+        if [ "$answer" = "y" ] || [ "$answer" = "Y" ]; then
+          # Prompt for a new branch name; generate one if none is provided.
+          read -p "Enter the new branch name (or leave empty for a generated name): " new_branch
+          if [ -z "$new_branch" ]; then
+            new_branch="feature-$(date +%Y%m%d%H%M%S)"
+            echo "No branch name provided. Using generated branch name: $new_branch"
+          fi
+          # Create and switch to the new branch
+          git checkout -b "$new_branch"
+          echo "Switched to new branch '$new_branch'. Please push your changes from this branch."
+          exit 1  # Abort the push so you can push from the new branch
+        else
+          echo "Proceeding with push on 'main'."
+        fi
+      fi
+
+      exit 0
+     ```
 
 2.  Remove Boilerplates
 
