@@ -62,7 +62,7 @@ config
 
    - CLI: `bun add --dev husky`
    - Init Husky: `bunx husky init`
-   - Delete the `pre-commit` file inside of `.husky` folder and create a new one named `pre-push` with the following content.
+   - Add this script inside of `.husky/pre-commit`.
      ```sh
      #!/bin/sh
      . "$(dirname "$0")/_/husky.sh"
