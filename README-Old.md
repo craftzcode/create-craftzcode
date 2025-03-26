@@ -99,10 +99,33 @@ config
        ```
    - Option 2: Go to the  `Preferences > VS Code Settings` search for the `Git Branch Protection` and add the `main` in the list.
 
-3.  Remove Boilerplates
+3.  Remove bolierplates and add script for `clean` and running dev with filtering both `docs` and `web`
 
-    - Delete `page.module.css` and all of code inside of `page.tsx` both on `docs and web`.
-    - GIT COMMIT: `git commit -m "refactor(docs|web): delete boilerplates"`
+    - Remove boilerplates
+      - Delete `page.module.css` and all of code inside of `page.tsx` both on `docs and web`.
+      
+      - GIT COMMIT: `git commit -m "refactor(docs|web): delete boilerplates"`
+
+    - Add clean script
+      - Add the clean script in all workspace `package.json`.
+        ```json
+        "clean": "git clean -xdf .cache .turbo node_modules"
+        ```
+      - Add clean script in the root project `package.json`.
+        ```json
+        "clean": "git clean -xdf node_modules",
+        "clean:workspaces": "turbo run clean"
+        ```
+      
+      - GIT COMMIT: `git commit -m "chore(package): add clean script to all workspaces"`
+
+      - Add the script for running dev with filtering `docs` or `web`
+        ```json
+        "dev:docs": "turbo run dev -F docs",
+        "dev:web": "turbo run dev -F web",
+        ```
+
+      - GIT COMMIT: `git commit -m "chore(package): add workspace-specific dev scripts"`
 
 4.  Create a Github Repository
 
@@ -468,13 +491,6 @@ config
         - Select all.
   
       - GIT COMMIT: `git commit -m "chore(shadcn): remove original files in packages/ui and setup shadcn"`
-  
-      - Add the clean script in all workspace `package.json`.
-        ```json
-        "clean": "git clean -xdf .cache .turbo node_modules"
-        ```
-
-      - GIT COMMIT: `git commit -m "chore(package): add clean script to all workspaces"`
 
     - PULL REQUEST TITLE: `chore(infrastructure): add shared prettier & tailwind configs and setup shadcn in packages/ui`
 
