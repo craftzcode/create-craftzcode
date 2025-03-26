@@ -474,7 +474,7 @@ config
         "clean": "git clean -xdf .cache .turbo node_modules"
         ```
 
-        - GIT COMMIT: `git commit -m "chore(package): add clean script to all workspaces"`
+      - GIT COMMIT: `git commit -m "chore(package): add clean script to all workspaces"`
 
     - PULL REQUEST TITLE: `chore(infrastructure): add shared prettier & tailwind configs and setup shadcn in packages/ui`
 
