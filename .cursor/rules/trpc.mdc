@@ -1,6 +1,6 @@
 ---
 description: tRPC Best Practices
-globs: packages/api/**/*.(ts|tsx)
+globs: packages/api/**/*.ts,packages/api/**/*.tsx
 alwaysApply: false
 ---
 - Use descriptive, domain-specific names for routers (e.g., `userRouter`, `authRouter`, etc.)
