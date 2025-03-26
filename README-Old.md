@@ -64,9 +64,6 @@ config
    - Init Husky: `bunx husky init`
    - Add this script inside of `.husky/pre-commit`.
      ```sh
-     #!/bin/sh
-     . "$(dirname "$0")/_/husky.sh"
-
      # Get the current branch name
      current_branch=$(git rev-parse --abbrev-ref HEAD)
 
