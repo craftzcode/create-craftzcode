@@ -1,6 +1,6 @@
 ---
 description: Expo Best Practices
-globs: apps/expo/**/*.(ts|tsx)
+globs: apps/expo/**/*.ts,apps/expo/**/*.tsx
 alwaysApply: false
 ---
 - Prefer functional components with React Hooks
