@@ -652,6 +652,7 @@ config
        }
 
        ```
+       - GIT COMMIT: `git commit -m "chore(db): configure TS and ESLint"`
 
    - Setup Neon Database
      - Create a database in [Neon Tech](https://console.neon.tech/).
@@ -668,4 +669,5 @@ config
          bun add drizzle-orm @neondatabase/serverless dotenv
          bun add -D drizzle-kit tsx
          ```
+         - GIT COMMIT `git commit -m "chore(db): install drizzle ORM and neon database packages"`
          
