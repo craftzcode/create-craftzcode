@@ -671,7 +671,7 @@ config
           }
           ```
          - GIT COMMIT: `git commit -m "chore(turbo): add db push and studio scripts"`
-     - Add `eslint.config.js` with the following code
+     - Add `eslint.config.js` in `packages/db` with the following code
        ```js
        import baseConfig from "@craftzcode/eslint-config/base";
 
@@ -684,7 +684,7 @@ config
        ];
 
        ```
-     - Add `tsconfig.json` with the following code.
+     - Add `tsconfig.json` in `packages/db` with the following code.
        ```json
        {
        "extends": "@craftzcode/typescript-config/base.json",
@@ -701,8 +701,8 @@ config
 
    - Setup Neon Database
      - Create a database in [Neon Tech](https://console.neon.tech/).
-     - Create `.env` on the root of package `packages/db/.env`.
-     - Copy the connection string and paste it to `.env`
+     - Create `.env` on the root of package `packages/db/.env.local`.
+     - Copy the connection string and paste it to `.env.local`
        ```
        DATABASE_URL="connection-string"
        ```
@@ -715,7 +715,7 @@ config
          bun add -D drizzle-kit tsx
          ```
          - GIT COMMIT `git commit -m "chore(db): install drizzle ORM and neon database packages"`
-       - Create a `src` folder and create a `index.ts` file in the `src` directory and initialize the connection.
+       - Create a `src` folder in `packages/db` and create a `index.ts` file in the `packages/db/src` directory and initialize the connection.
          ```ts
          import { drizzle } from 'drizzle-orm/neon-http'
 
@@ -752,7 +752,7 @@ config
          export const db = drizzle(DATABASE_URL)
          ```
          - GIT COMMIT: `git commit -m "feat(db): initialize database connection"`
-       - Create a `schema` folder and create a `auth.ts` file in the `packages/db/src/schema` directory and add this schema.
+       - Create a `schema` folder in `packages/db/src` and create a `auth.ts` file in the `packages/db/src/schema` directory and add this schema.
          ```ts
          import { boolean, pgTable, text, timestamp, uuid } from 'drizzle-orm/pg-core'
 
