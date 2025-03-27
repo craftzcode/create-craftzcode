@@ -108,10 +108,20 @@ config
         ```json
         "clean": "git clean -xdf .cache .turbo node_modules"
         ```
-      - Add clean script in the root project `package.json`.
+      - Add this two clean scripts in the root `package.json` of your turborepo.
         ```json
-        "clean": "git clean -xdf node_modules",
-        "clean:workspaces": "turbo run clean"
+        "scripts": {
+          "clean": "git clean -xdf node_modules",
+          "clean:workspaces": "turbo run clean"
+        }
+        ```
+      - Also add the clean script in `turbo.json`.
+        ```json
+        "tasks": {
+          "clean": {
+            "cache": false
+          },
+        }
         ```
       - GIT COMMIT: `git commit -m "chore(package): add clean script to all workspaces"`
       - Add the script for running dev with filtering `docs` or `web`
@@ -426,27 +436,19 @@ config
           "iconLibrary": "lucide"
         }
         ```
-      - Add the following scripts to your root `package.json`.
+      - Add the ui-add script to your root `package.json` of your turborepo.
         ```json
-        {
-          "scripts": {
-            "ui-add": "turbo run ui-add -F @craftzcode/ui --",
-            "clean": "git clean -xdf node_modules",
-            "clean:workspaces": "turbo run clean"
-          }
+        "scripts": {
+          "ui-add": "turbo run ui-add -F @craftzcode/ui --",
         }
         ```
-      - Add the following entries to your turbo.json.
+      - Add the ui-add script to your turbo.json.
         ```json
-        {
-          "tasks": {
-            "ui-add": {
-              "cache": false,
-              "interactive": true
+        "tasks": {
+          "ui-add": {
+            "cache": false,
+            "interactive": true
             },
-            "clean": {
-              "cache": false
-            }
           }
         }
         ```
@@ -648,6 +650,27 @@ config
           }
           ```
        - GIT COMMIT: `git commit -m "chore(db): add package.json for db package"`
+       - Add this two db scripts in the `package.json` of the root your turbrepo.
+         ```json
+         "scripts": {
+           "db:craftzcode": "turbo -F @rhu-ii/db push",
+           "db:studio": "turbo -F @craftzcode/db studio"
+         }
+         ```
+       - Also add the db scripts in `turbo.json`
+         ```json
+         "tasks": {
+           "push": {
+             "cache": false,
+             "interactive": true
+            },
+            "studio": {
+              "cache": false,
+              "persistent": true
+            }
+          }
+          ```
+         - GIT COMMIT: `git commit -m "chore(turbo): add db push and studio scripts"`
      - Add `eslint.config.js` with the following code
        ```js
        import baseConfig from "@craftzcode/eslint-config/base";
