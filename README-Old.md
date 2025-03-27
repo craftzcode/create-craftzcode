@@ -53,13 +53,11 @@ config
 ```
 
 1.  Create Turborepo Project
-
     - CLI: `pnpm dlx create-turbo@latest craftzcode-stack`
     - Package Manager: `Bun`
     - Update Dependencies in all Workspace: `bun update`
   
 2. Protect the main branch
-
    - Option 1: Add Husky (Pre-Commit) for Automation of Git Commit
      - CLI: `bun add --dev husky`
      - Init Husky: `bunx husky init`
@@ -97,13 +95,12 @@ config
   
        exit 0
        ```
+       
    - Option 2: Go to the  `Preferences > VS Code Settings` search for the `Git Branch Protection` and add the `main` in the list.
 
 3.  Remove bolierplates and add script for `clean` and running dev with filtering both `docs` and `web`
-
     - Remove boilerplates
       - Delete `page.module.css` and all of code inside of `page.tsx` both on `docs and web`.
-      
       - GIT COMMIT: `git commit -m "refactor(docs|web): delete boilerplates"`
 
     - Add clean script
@@ -116,48 +113,40 @@ config
         "clean": "git clean -xdf node_modules",
         "clean:workspaces": "turbo run clean"
         ```
-      
       - GIT COMMIT: `git commit -m "chore(package): add clean script to all workspaces"`
-
       - Add the script for running dev with filtering `docs` or `web`
         ```json
         "dev:docs": "turbo run dev -F docs",
         "dev:web": "turbo run dev -F web",
         ```
-
       - GIT COMMIT: `git commit -m "chore(package): add workspace-specific dev scripts"`
 
 4.  Create a Github Repository
-
     - Add the github repository to the project and push the main branch.
 
 5.  Add Cursor Rules, Rename Workspace, Configure Typescript & Eslint
-
     - GIT BRANCH: `git checkout -b infrastructure/chore/1-cursor-alias-config`
       
     - Add Cursor Rules
-
       - Copy all of my cursor rules in `.cursor/rules/{rules}.mdc`.
       - GIT COMMIT: `feat(cursor): add custom rules for Cursor AI Editor`
 
     - Rename Package Imports
-
       - Rename all instances of `@repo` to `@craftzcode` in the project. This ensures that imports will look like `@craftzcode/ui`.
       - GIT COMMIT: `git commit -m "refactor(alias): rename @repo to @craftzcode"`
 
     - Configure TypeScript & ESLint
-
       - Create a new folder named `config` in the root of your project.
       - Move the `typescript-config` and `eslint-config` into the `config` folder.
       - Add the `config` folder to `workspaces` in the `package.json` of the root of your project.
       - Reinstall packages.
         - CLI: `bun install`
+    
       - GIT COMMIT: `git commit -m "chore(config): move typescript and eslint configs to config folder"`
 
     - PULL REQUEST TITLE: `chore(infrastructure): add cursor rules, update aliases, and reorganize configs`
 
 6.  Setup Prettier, Tailwind CSS, and Shadcn UI Shared Configs
-
     ```
     craftzcode-stack/
     ├── config/
@@ -184,10 +173,8 @@ config
     - GIT BRANCH: `git checkout -b infrastructure/chore/2-shared-config`
 
     - Create the Prettier Config Package
-
       - Create a folder called `prettier-config` inside the `config` folder.
       - Inside `config/prettier-config`, create a `package.json` file with the following content.
-
         ```json
         {
           "name": "@craftzcode/prettier-config",
@@ -207,15 +194,11 @@ config
           "prettier": "@craftzcode/prettier-config"
         }
         ```
-
       - Go to the location of your `prettier-config` folder in shell then install `prettier` and `plugins`
-
         ```shell
         bun add -D prettier @ianvs/prettier-plugin-sort-imports prettier-plugin-tailwindcss
         ```
-
       - Inside the `config/prettier-config` folder, create an `index.js` file with the following content.
-
         ```js
         /** @typedef {import("prettier").Config} PrettierConfig */
         /** @typedef {import("prettier-plugin-tailwindcss").PluginOptions} TailwindConfig */
@@ -305,14 +288,13 @@ config
 
         export default config;
         ```
-
+      - Add `"@craftzcode/prettier-config": "*"` in the `devDependencies` of `package.json` where workspace are you currently working on it.
+      - Add `"prettier": "@craftzcode/prettier-config"` in the `package.json` where workspace are you currently working on it.
       - GIT COMMIT: `git commit -m "chore(prettier): add shared prettier config for all workspaces"`
 
     - Create the Tailwind CSS Config Package
-
       - Inside the `config` folder, create a new folder named `tailwind-config`.
       - Inside `config/tailwind-config`, create a `package.json` file with the following content.
-
         ```json
         {
           "name": "@craftzcode/tailwind-config",
@@ -335,16 +317,12 @@ config
           "prettier": "@craftzcode/prettier-config"
         }
         ```
-
       - Go to the location of your `tailwind-config` folder in shell then install `tailwind`
-
         ```shell
         bun add -D tailwindcss @tailwindcss/postcss
         bun add tw-animate-css
         ```
-
       - Inside the `config/tailwind-config` folder, create a file named `postcss.config.mjs` with the following content.
-
         ```js
         const config = {
           plugins: ["@tailwindcss/postcss"],
@@ -352,16 +330,14 @@ config
 
         export default config;
         ```
-
       - Inside the same `config/tailwind-config` folder, create a file named `style.css` and copy and paste the content of `globals.css` in the existing next.js project with a latest shadcn and add also this `@source '../../packages/ui';` to include the shadcn shared config in `packages/ui`.
-        
+      - Add `"@craftzcode/tailwind-config": "*"` in the `devDependencies` of `package.json` where web apps are you currently working on it.
+      - Add `@import "@craftzcode/tailwind-config/style.css";` in the `globals.css` where web apps are you currently working on it.
       - GIT COMMIT: `git commit -m "chore(tailwind): add shared tailwind css config for all workspaces"`
 
     - Setup shared shadcn-ui
-
       - Delete all files inside the `packages/ui/src/components` folder to prepare for shadcn-ui’s generated components.
       - Replace the contents of `packages/ui/package.json` with the following code.
-
         ```json
         {
           "name": "@craftzcode/ui",
@@ -399,15 +375,11 @@ config
           "prettier": "@craftzcode/prettier-config"
         }
         ```
-
       - Go to the location of your `packages/ui` folder in shell then install shadcn-ui additional dependencies
-
         ```shell
         bun add class-variance-authority clsx tailwind-merge lucide-react
         ```
-
       - Edit (or create) the `tsconfig.json` file inside `packages/ui` with the following content.
-
         ```json
         {
           "extends": "@craftzcode/typescript-config/react-library.json",
@@ -421,9 +393,7 @@ config
           "exclude": ["node_modules", "dist"]
         }
         ```
-
       - Inside `packages/ui/src/lib`, create a file named `utils.ts` with the following content.
-
         ```ts
         import { clsx, type ClassValue } from "clsx";
         import { twMerge } from "tailwind-merge";
@@ -432,9 +402,7 @@ config
           return twMerge(clsx(inputs));
         }
         ```
-
       - Inside the `packages/ui` folder, create a file named `components.json` with the following content.
-
         ```json
         {
           "$schema": "https://ui.shadcn.com/schema.json",
@@ -458,9 +426,7 @@ config
           "iconLibrary": "lucide"
         }
         ```
-
       - Add the following scripts to your root `package.json`.
-
         ```json
         {
           "scripts": {
@@ -470,7 +436,6 @@ config
           }
         }
         ```
-
       - Add the following entries to your turbo.json.
         ```json
         {
@@ -485,11 +450,9 @@ config
           }
         }
         ```
-  
       - Add all shadcn components.
         - CLI: `bun run ui-add`
         - Select all.
-  
       - GIT COMMIT: `git commit -m "chore(shadcn): remove original files in packages/ui and setup shadcn"`
 
     - PULL REQUEST TITLE: `chore(infrastructure): add shared prettier & tailwind configs and setup shadcn in packages/ui`
@@ -505,11 +468,9 @@ config
         - Always add `"@craftzcode/typescript-config": "*"` and `"@craftzcode/eslint-config": "*"` where workspace are you currently working on it.
 
 7.  Add full `metadata` and change `font family`
-
     - GIT BRANCH: ` frontend/feat/3-metadata-manifest-font-family`
-
-    - Update both root `layout.tsx` of `docs` and `web` to add a full `metadata` and change `font family`.
       
+    - Update both root `layout.tsx` of `docs` and `web` to add a full `metadata` and change `font family`.
       ```js
       import type { Metadata } from 'next'
 
@@ -619,7 +580,7 @@ config
             }
 
             ```
-
+      
     - Update `style.css` in the `config/tailwind-config/style.css` to change the `font family`.
       ```css
       --font-sans: var(--font-open-sans);
