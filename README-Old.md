@@ -594,4 +594,13 @@ config
   
     - PULL REQUEST TITLE: `feat(frontend): update docs/web layout with full metadata also change font family and add manifest.json`
      
+8. Create the Navigation Menu and Main Component
+   - GIT BRANCH: `frontend/feat/4-navigation-menu-main-layout`
 
+   - Navigation Menu
+     - GIT COMMIT: `git commit -m "feat(nav): add responsive navigation menu"`
+
+   - Main Layout
+     - GIT COMMIT: `git commit -m "feat(layout): add responsive main component for all routes"`
+
+   - PULL REQUEST TITLE: `feat(ui): install remix icon, add responsive navigation & main layout`
