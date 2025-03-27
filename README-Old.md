@@ -194,7 +194,7 @@ config
           "prettier": "@craftzcode/prettier-config"
         }
         ```
-      - Go to the location of your `prettier-config` folder in shell then install `prettier` and `plugins`
+      - Go to the location of your `prettier-config` folder in shell then install `prettier` and `plugins`.
         ```shell
         bun add -D prettier @ianvs/prettier-plugin-sort-imports prettier-plugin-tailwindcss
         ```
@@ -317,7 +317,7 @@ config
           "prettier": "@craftzcode/prettier-config"
         }
         ```
-      - Go to the location of your `tailwind-config` folder in shell then install `tailwind`
+      - Go to the location of your `tailwind-config` folder in shell then install `tailwind`.
         ```shell
         bun add -D tailwindcss @tailwindcss/postcss
         bun add tw-animate-css
@@ -465,10 +465,10 @@ config
         1. Always add `"@craftzcode/tailwind-config": "*"` in the `devDependencies` of `package.json` where web apps are you currently working on it.
         2. Always add `@import "@craftzcode/tailwind-config/style.css";` in the `globals.css` where web apps are you currently working on it.
       - Typescript and Eslint Shared Config
-        - Always add `"@craftzcode/typescript-config": "*"` and `"@craftzcode/eslint-config": "*"` where workspace are you currently working on it.
+        - Always add `typescript`, `"@craftzcode/typescript-config": "*"` and `eslint`, `"@craftzcode/eslint-config": "*"` on the `package.json` where workspace are you currently working on it.
 
 7.  Add full `metadata` and change `font family`
-    - GIT BRANCH: ` frontend/feat/3-metadata-manifest-font-family`
+    - GIT BRANCH: `git checkout -b frontend/feat/3-metadata-manifest-font-family`
       
     - Update both root `layout.tsx` of `docs` and `web` to add a full `metadata` and change `font family`.
       ```js
@@ -595,7 +595,7 @@ config
     - PULL REQUEST TITLE: `feat(frontend): update docs/web layout with full metadata also change font family and add manifest.json`
      
 8. Create the Navigation Menu and Main Component
-   - GIT BRANCH: `frontend/feat/4-navigation-menu-main-layout`
+   - GIT BRANCH: `git checkout -b frontend/feat/4-navigation-menu-main-layout`
 
    - Navigation Menu
      - GIT COMMIT: `git commit -m "feat(nav): add responsive navigation menu"`
@@ -604,3 +604,58 @@ config
      - GIT COMMIT: `git commit -m "feat(layout): add responsive main component for all routes"`
 
    - PULL REQUEST TITLE: `feat(ui): install remix icon, add responsive navigation & main layout`
+
+9. Setup Drizzle ORM and Neon Database
+   - GIT BRANCH: `git checkout -b `
+
+   - Setup `db` package
+     - Create a folder called `db` inside the `packages` folder.
+     - Go to the location of your `db` folder in shell then init the `package.json`
+       - CLI: `bun init`
+       - Replace the contents of `packages/db/package.json` with the following code.
+         ```json
+         {
+           "name": "@rhu-ii/db",
+           "module": "index.ts",
+           "type": "module",
+           "devDependencies": {
+             "@rhu-ii/eslint-config": "*",
+             "@rhu-ii/typescript-config": "*",
+             "@rhu-ii/prettier-config": "*",
+             "eslint": "^9.22.0",
+             "typescript": "5.8.2"
+           },
+           "prettier": "@rhu-ii/prettier-config"
+         }
+
+         ```
+     - Add `eslint.config.js` with the following code
+       ```js
+       import baseConfig from "@craftzcode/eslint-config/base";
+
+       /** @type {import('typescript-eslint').Config} */
+       export default [
+         {
+           ignores: ["dist/**"],
+         },
+         ...baseConfig,
+       ];
+
+       ```
+     - Add `tsconfig.json` with the following code.
+       ```json
+       {
+       "extends": "@rhu-ii/typescript-config/base.json",
+       "include": ["src"],
+       "exclude": ["node_modules"]
+       }
+
+       ```
+
+   - Setup Neon Database
+     - Create a database in [Neon Tech](https://console.neon.tech/).
+     - Create `.env` on the root of package `packages/db/.env`.
+     - Copy the connection string and paste it to `.env`
+       ```
+       DATABASE_URL="connection-string"
+       ```
