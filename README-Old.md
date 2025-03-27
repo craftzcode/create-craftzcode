@@ -659,3 +659,12 @@ config
        ```
        DATABASE_URL="connection-string"
        ```
+   - Setup Drizzle ORM
+     - Option 1: Follow their official [Drizzle ORM Documentation](https://orm.drizzle.team/docs/get-started/neon-new).
+     - Option 2: Follow this guide.
+       - Go to the location of your `db` folder in shell then install `Drizzle ORM` and `Neon Database` packages.
+         ```shell
+         bun add drizzle-orm @neondatabase/serverless dotenv
+         bun add -D drizzle-kit tsx
+         ```
+         
