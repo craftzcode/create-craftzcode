@@ -606,7 +606,7 @@ config
    - PULL REQUEST TITLE: `feat(ui): install remix icon, add responsive navigation & main layout`
 
 9. Setup Drizzle ORM and Neon Database
-   - GIT BRANCH: `git checkout -b `
+   - GIT BRANCH: `git checkout -b backend/feat/5-db`
 
    - Setup `db` package
      - Create a folder called `db` inside the `packages` folder.
@@ -629,6 +629,7 @@ config
          }
 
          ```
+       - GIT COMMIT: `git commit -m "chore(db): add package.json for db package"`
      - Add `eslint.config.js` with the following code
        ```js
        import baseConfig from "@craftzcode/eslint-config/base";
