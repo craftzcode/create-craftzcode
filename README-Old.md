@@ -631,6 +631,8 @@ config
             "scripts": {
               "build": "tsc",
               "dev": "tsc",
+              "push": "bunx drizzle-kit push",
+              "studio": "bunx drizzle-kit studio",
               "lint": "eslint . --max-warnings 0",
               "check-types": "tsc --noEmit",
               "clean": "git clean -xdf .cache .turbo node_modules"
@@ -663,6 +665,10 @@ config
        ```json
        {
        "extends": "@craftzcode/typescript-config/base.json",
+       "compilerOptions": {
+         "module": "Preserve",
+         "moduleResolution": "Bundler"
+       },
        "include": ["src"],
        "exclude": ["node_modules"]
        }
@@ -780,5 +786,5 @@ config
          - GIT COMMIT: `git commit -m "feat(db): add auth schema in src/schema"`
        - Create a `index.ts` file in the `src/schema` directory and export the `auth.ts` so we can import like this `import { user } from '@craftzcode/db/schema'`.
          ```ts
-         export * from './auth.js'
+         export * from './auth'
          ```
