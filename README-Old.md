@@ -752,7 +752,7 @@ config
          export const db = drizzle(DATABASE_URL)
          ```
          - GIT COMMIT: `git commit -m "feat(db): initialize database connection"`
-       - Create a `schema` folder and create a `auth.ts` file in the `src/schema` directory and add this schema.
+       - Create a `schema` folder and create a `auth.ts` file in the `packages/db/src/schema` directory and add this schema.
          ```ts
          import { boolean, pgTable, text, timestamp, uuid } from 'drizzle-orm/pg-core'
 
@@ -807,7 +807,36 @@ config
          })
          ```
          - GIT COMMIT: `git commit -m "feat(db): add auth schema in src/schema"`
-       - Create a `index.ts` file in the `src/schema` directory and export the `auth.ts` so we can import like this `import { user } from '@craftzcode/db/schema'`.
+       - Create a `index.ts` file in the `packages/db/src/schema` directory and export the `auth.ts` so we can import like this `import { user } from '@craftzcode/db/schema'`.
          ```ts
          export * from './auth'
          ```
+       - Create a `drizzle.config.ts` file in the `packages/db/src` and add the following content.
+         ```ts
+         import dotenv from 'dotenv'
+         import { defineConfig } from 'drizzle-kit'
+         
+         // We use dotenv to load environment variables from our .env.local file into process.env
+         // This is especially useful when running scripts outside of Next.js (e.g., CLI commands like `drizzle-kit push`).
+         // While Next.js automatically loads environment variables for its runtime, we still need dotenv
+         // for scripts or tools that aren't run within the Next.js environment (like Drizzle migrations).
+         dotenv.config({ path: '.env.local' })
+         
+         // Retrieve the database URL from environment variables
+         const DATABASE_URL = process.env.DATABASE_URL
+         
+         // Ensure that the DATABASE_URL is defined
+         if (!DATABASE_URL) {
+           throw new Error('DATABASE_URL is not defined')
+         }
+         
+         export default defineConfig({
+           out: './drizzle',
+           schema: './src/schema/index.ts',
+           dialect: 'postgresql',
+           dbCredentials: {
+             url: DATABASE_URL
+           }
+         })
+         ```
+         - GIT COMMIT: `git commit -m "feat(db): add drizzle.config.ts for Drizzle Kit configuration"`
