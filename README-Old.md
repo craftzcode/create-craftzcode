@@ -515,7 +515,7 @@ config
               openGraph: {
                 type: 'website',
                 locale: 'en_US',
-                url: 'https://rhu-ii-system.gov.ph/',
+                url: 'https://craftzcode-system.gov.ph/',
                 title: 'RHU II System',
                 description:
                   'Comprehensive healthcare management system for Rural Health Units offering free medical services, patient management, and inventory tracking.',
@@ -613,22 +613,38 @@ config
      - Go to the location of your `db` folder in shell then init the `package.json`
        - CLI: `bun init`
        - Replace the contents of `packages/db/package.json` with the following code.
-         ```json
-         {
-           "name": "@rhu-ii/db",
-           "module": "index.ts",
-           "type": "module",
-           "devDependencies": {
-             "@rhu-ii/eslint-config": "*",
-             "@rhu-ii/typescript-config": "*",
-             "@rhu-ii/prettier-config": "*",
-             "eslint": "^9.22.0",
-             "typescript": "5.8.2"
-           },
-           "prettier": "@rhu-ii/prettier-config"
-         }
-
-         ```
+          ```json
+          {
+            "name": "@craftzcode/db",
+            "version": "0.0.0",
+            "type": "module",
+            "exports": {
+              ".": {
+                "types": "./dist/index.d.ts",
+                "default": "./src/index.ts"
+              },
+              "./schema": {
+                "types": "./dist/src/schema/index.d.ts",
+                "default": "./src/schema/index.ts"
+              }
+            },
+            "scripts": {
+              "build": "tsc",
+              "dev": "tsc",
+              "lint": "eslint . --max-warnings 0",
+              "check-types": "tsc --noEmit",
+              "clean": "git clean -xdf .cache .turbo node_modules"
+            },
+            "devDependencies": {
+              "@craftzcode/eslint-config": "*",
+              "@craftzcode/prettier-config": "*",
+              "@craftzcode/typescript-config": "*",
+              "eslint": "^9.22.0",
+              "typescript": "5.8.2"
+            },
+            "prettier": "@craftzcode/prettier-config"
+          }
+          ```
        - GIT COMMIT: `git commit -m "chore(db): add package.json for db package"`
      - Add `eslint.config.js` with the following code
        ```js
@@ -646,7 +662,7 @@ config
      - Add `tsconfig.json` with the following code.
        ```json
        {
-       "extends": "@rhu-ii/typescript-config/base.json",
+       "extends": "@craftzcode/typescript-config/base.json",
        "include": ["src"],
        "exclude": ["node_modules"]
        }
