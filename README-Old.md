@@ -883,7 +883,7 @@ config
          bun add @trpc/server @trpc/client @trpc/tanstack-react-query @tanstack/react-query@latest zod client-only server-only
          ```
          - GIT COMMIT `git commit -m "chore(api): install tRPC packages"`
-       - Create a `src` and `src/server` folder in your `packages/api` and create a `init.ts` file in the `packages/api/src/server` initialize the backend of tRPC.
+       - Create a `src` and `src/server` folder in your `packages/api` and create a `init.ts/index.ts` file in the `packages/api/src/server` initialize the backend of tRPC.
          ```ts
          import { cache } from 'react'
 
@@ -910,7 +910,7 @@ config
          export const createCallerFactory = t.createCallerFactory
          export const publicProcedure = t.procedure
          ```
-       - Create `routers` folder in `packages/api/src` and create a `_app.ts` file in the `packages/api/src/server/routers` add this example tRPC route.
+       - Create `routers` folder in `packages/api/src` and create a `_app.ts/index.ts` file in the `packages/api/src/server/routers` add this example tRPC route.
          ```ts
          import { z } from 'zod'
 
@@ -931,4 +931,28 @@ config
          })
          // export type definition of API
          export type AppRouter = typeof appRouter
+         ```
+       - Create `client` folder in `packages/api/src` and create a shared file `packages/api/src/client/query-client.ts` that exports a function that creates a `QueryClient` instance.
+         ```ts
+         import superjson from 'superjson'
+
+         import { defaultShouldDehydrateQuery, QueryClient } from '@tanstack/react-query'
+
+         export function makeQueryClient() {
+           return new QueryClient({
+             defaultOptions: {
+               queries: {
+                staleTime: 30 * 1000
+               },
+               dehydrate: {
+                 serializeData: superjson.serialize,
+                 shouldDehydrateQuery: query =>
+                   defaultShouldDehydrateQuery(query) || query.state.status === 'pending'
+               },
+               hydrate: {
+                 deserializeData: superjson.deserialize
+               }
+             }
+           })
+         }
          ```
