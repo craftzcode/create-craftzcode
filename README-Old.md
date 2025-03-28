@@ -926,7 +926,7 @@ config
          bun add @trpc/server @trpc/client @trpc/tanstack-react-query @tanstack/react-query@latest zod client-only server-only
          ```
          - GIT COMMIT `git commit -m "chore(api): install tRPC packages"`
-       - Create a `src` and `src/server` folder in your `packages/api` and create a `init.ts/index.ts` file in the `packages/api/src/server` initialize the backend of tRPC.
+       - Create a `src` folder in your `packages/api` and create a `init.ts/index.ts` file in the `packages/api/src` initialize the backend of tRPC.
          ```ts
          import { cache } from 'react'
 
