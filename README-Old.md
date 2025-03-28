@@ -707,7 +707,7 @@ config
    - Setup Drizzle ORM
      - Option 1: Follow their official [Drizzle ORM Documentation](https://orm.drizzle.team/docs/get-started/neon-new).
      - Option 2: Follow this guide.
-       - Go to the location of your `db` folder in shell then install `Drizzle ORM` and `Neon Database` packages.
+       - Go to the `packages/db` folder in your shell then install `Drizzle ORM` and `Neon Database` packages.
          ```shell
          bun add drizzle-orm @neondatabase/serverless dotenv
          bun add -D drizzle-kit tsx
@@ -874,3 +874,13 @@ config
        }
        ```
      - GIT COMMIT: `git commit -m "chore(api): configure TS and ESLint"`
+       
+   - Setup tRPC
+     - Option 1: Follow their official [tRPC Documentation](https://trpc.io/docs/client/tanstack-react-query/server-components).
+     - Option 2: Follow this guide.
+       - Go to the `packages/api` folder in shell then install `tRPC` packages.
+         ```shell
+         bun add @trpc/server @trpc/client @trpc/tanstack-react-query @tanstack/react-query@latest zod client-only server-only
+         ```
+         - GIT COMMIT `git commit -m "chore(db): install drizzle ORM and neon database packages"`
+       - Create a `src` folder in your `packages/api` and create a `index.ts` file in the `packages/api/src` directory and initialize the connection.
