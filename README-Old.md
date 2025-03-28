@@ -682,7 +682,6 @@ config
          },
          ...baseConfig,
        ];
-
        ```
      - Add `tsconfig.json` in `packages/db` with the following code.
        ```json
@@ -695,9 +694,8 @@ config
        "include": ["src"],
        "exclude": ["node_modules"]
        }
-
        ```
-       - GIT COMMIT: `git commit -m "chore(db): configure TS and ESLint"`
+     - GIT COMMIT: `git commit -m "chore(db): configure TS and ESLint"`
 
    - Setup Neon Database
      - Create a database in [Neon Tech](https://console.neon.tech/).
@@ -840,3 +838,39 @@ config
          })
          ```
          - GIT COMMIT: `git commit -m "feat(db): add drizzle.config.ts for Drizzle Kit configuration"`
+
+9. Setup tRPC with Hono.js
+   - GIT BRANCH: ``
+
+   - Setup `api` package
+     - Create a folder called `api` inside the `packages` folder.
+     - Inside `packages/api`, create a `package.json` file with the following content.
+       ```json
+          
+       ```
+       - GIT COMMIT: `git commit -m "chore(db): add package.json for db package"`
+     - Add `eslint.config.js` in `packages/api` with the following code
+       ```js
+       import baseConfig from "@craftzcode/eslint-config/base";
+
+       /** @type {import('typescript-eslint').Config} */
+       export default [
+         {
+           ignores: ["dist/**"],
+         },
+         ...baseConfig,
+       ];
+       ```
+     - Add `tsconfig.json` in `packages/api` with the following code.
+       ```json
+       {
+       "extends": "@craftzcode/typescript-config/base.json",
+       "compilerOptions": {
+         "module": "Preserve",
+         "moduleResolution": "Bundler"
+       },
+       "include": ["src"],
+       "exclude": ["node_modules"]
+       }
+       ```
+     - GIT COMMIT: `git commit -m "chore(api): configure TS and ESLint"`
