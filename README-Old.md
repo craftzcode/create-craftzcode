@@ -883,4 +883,30 @@ config
          bun add @trpc/server @trpc/client @trpc/tanstack-react-query @tanstack/react-query@latest zod client-only server-only
          ```
          - GIT COMMIT `git commit -m "chore(db): install drizzle ORM and neon database packages"`
-       - Create a `src` folder in your `packages/api` and create a `index.ts` file in the `packages/api/src` directory and initialize the connection.
+       - Create a `src` and `src/server` folder in your `packages/api` and create a `index.ts` file in the `packages/api/src/server` initialize the backend of tRPC.
+         ```ts
+         import { cache } from 'react'
+
+         import { initTRPC } from '@trpc/server'
+
+         export const createTRPCContext = cache(async () => {
+           /**
+            * @see: https://trpc.io/docs/server/context
+            */
+           return { userId: 'user_123' }
+         })
+         // Avoid exporting the entire t-object
+         // since it's not very descriptive.
+         // For instance, the use of a t variable
+         // is common in i18n libraries.
+         const t = initTRPC.create({
+           /**
+            * @see https://trpc.io/docs/server/data-transformers
+            */
+           // transformer: superjson,
+         })
+         // Base router and procedure helpers
+         export const createTRPCRouter = t.router
+         export const createCallerFactory = t.createCallerFactory
+         export const publicProcedure = t.procedure
+         ```
