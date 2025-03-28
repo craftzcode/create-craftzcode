@@ -607,7 +607,7 @@ config
 
    - PULL REQUEST TITLE: `feat(ui): install remix icon, add responsive navigation & main layout`
 
-9. Setup Drizzle ORM and Neon Database
+9. Setup DB package for Drizzle ORM and Neon Database
    - GIT BRANCH: `git checkout -b backend/feat/5-db`
 
    - Setup `db` package
@@ -839,7 +839,7 @@ config
          ```
          - GIT COMMIT: `git commit -m "feat(db): add drizzle.config.ts for Drizzle Kit configuration"`
 
-9. Setup tRPC with Hono.js
+9. Setup API package for tRPC
    - GIT BRANCH: ``
 
    - Setup `api` package
@@ -1137,3 +1137,20 @@ config
          //   );
          // }
          ```
+       - Initialize the connection of `tRPC` and `Next.js`.
+         - Add the `@rhu-ii/api` package in `dependencies` of the `web/packages.json`.
+         - Create the `app/api/trpc/[tprc]/route.ts` with the following code.
+           ```ts
+           import { appRouter, createTRPCContext } from '@rhu-ii/api'
+
+           import { fetchRequestHandler } from '@trpc/server/adapters/fetch'
+
+           const handler = (req: Request) =>
+             fetchRequestHandler({
+               endpoint: '/api/trpc',
+               req,
+               router: appRouter,
+               createContext: createTRPCContext
+             })
+           export { handler as GET, handler as POST }
+           ```
