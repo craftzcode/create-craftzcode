@@ -653,7 +653,7 @@ config
        - Add this two db scripts in the `package.json` of the root your turbrepo.
          ```json
          "scripts": {
-           "db:craftzcode": "turbo -F @rhu-ii/db push",
+           "db:craftzcode": "turbo -F @craftzcode/db push",
            "db:studio": "turbo -F @craftzcode/db studio"
          }
          ```
@@ -847,7 +847,7 @@ config
      - Inside `packages/api`, create a `package.json` file with the following content.
        ```json
        {
-         "name": "@rhu-ii/api",
+         "name": "@craftzcode/api",
          "version": "0.0.0",
          "type": "module",
          "exports": {
@@ -871,24 +871,14 @@ config
            "check-types": "tsc --noEmit",
            "clean": "git clean -xdf .cache .turbo node_modules"
          },
-         "dependencies": {
-           "@tanstack/react-query": "^5.69.0",
-           "@trpc/client": "^11.0.0",
-           "@trpc/server": "^11.0.0",
-           "@trpc/tanstack-react-query": "^11.0.0",
-           "client-only": "^0.0.1",
-           "server-only": "^0.0.1",
-           "superjson": "^2.2.2",
-           "zod": "^3.24.2"
-         },
          "devDependencies": {
-           "@rhu-ii/eslint-config": "*",
-           "@rhu-ii/prettier-config": "*",
-           "@rhu-ii/typescript-config": "*",
+           "@craftzcode/eslint-config": "*",
+           "@craftzcode/prettier-config": "*",
+           "@craftzcode/typescript-config": "*",
            "eslint": "^9.22.0",
            "typescript": "5.8.2"
          },
-         "prettier": "@rhu-ii/prettier-config"
+         "prettier": "@craftzcode/prettier-config"
        }
        ```
        - GIT COMMIT: `git commit -m "chore(db): add package.json for db package"`
@@ -907,7 +897,7 @@ config
      - Add `tsconfig.json` in `packages/api` with the following code.
        ```json
        {
-       "extends": "@craftzcode/typescript-config/base.json",
+       "extends": "@craftzcode/typescript-config/react-library.json",
        "compilerOptions": {
          "module": "Preserve",
          "moduleResolution": "Bundler"
@@ -1138,10 +1128,10 @@ config
          // }
          ```
        - Initialize the connection of `tRPC` and `Next.js`.
-         - Add the `@rhu-ii/api` package in `dependencies` of the `web/packages.json`.
+         - Add the `@craftzcode/api` package in `dependencies` of the `web/packages.json`.
          - Create the `app/api/trpc/[tprc]/route.ts` with the following code.
            ```ts
-           import { appRouter, createTRPCContext } from '@rhu-ii/api'
+           import { appRouter, createTRPCContext } from '@craftzcode/api'
 
            import { fetchRequestHandler } from '@trpc/server/adapters/fetch'
 
