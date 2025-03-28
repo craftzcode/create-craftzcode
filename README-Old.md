@@ -846,7 +846,50 @@ config
      - Create a folder called `api` inside the `packages` folder.
      - Inside `packages/api`, create a `package.json` file with the following content.
        ```json
-          
+       {
+         "name": "@rhu-ii/api",
+         "version": "0.0.0",
+         "type": "module",
+         "exports": {
+           ".": {
+             "types": "./dist/src/index.d.ts",
+             "default": "./src/index.ts"
+           },
+           "./client": {
+             "types": "./dist/src/client/index.d.tsx",
+             "default": "./src/client/index.tsx"
+           },
+           "./server": {
+             "types": "./dist/src/server/index.d.tsx",
+             "default": "./src/server/index.tsx"
+           }
+         },
+         "scripts": {
+           "build": "tsc",
+           "dev": "tsc",
+           "lint": "eslint . --max-warnings 0",
+           "check-types": "tsc --noEmit",
+           "clean": "git clean -xdf .cache .turbo node_modules"
+         },
+         "dependencies": {
+           "@tanstack/react-query": "^5.69.0",
+           "@trpc/client": "^11.0.0",
+           "@trpc/server": "^11.0.0",
+           "@trpc/tanstack-react-query": "^11.0.0",
+           "client-only": "^0.0.1",
+           "server-only": "^0.0.1",
+           "superjson": "^2.2.2",
+           "zod": "^3.24.2"
+         },
+         "devDependencies": {
+           "@rhu-ii/eslint-config": "*",
+           "@rhu-ii/prettier-config": "*",
+           "@rhu-ii/typescript-config": "*",
+           "eslint": "^9.22.0",
+           "typescript": "5.8.2"
+         },
+         "prettier": "@rhu-ii/prettier-config"
+       }
        ```
        - GIT COMMIT: `git commit -m "chore(db): add package.json for db package"`
      - Add `eslint.config.js` in `packages/api` with the following code
@@ -889,6 +932,8 @@ config
 
          import { initTRPC } from '@trpc/server'
 
+         import { AppRouter, appRouter } from './server/routers'
+
          export const createTRPCContext = cache(async () => {
            /**
             * @see: https://trpc.io/docs/server/context
@@ -909,6 +954,9 @@ config
          export const createTRPCRouter = t.router
          export const createCallerFactory = t.createCallerFactory
          export const publicProcedure = t.procedure
+         // TODO: Add Protected Procedure
+         export { appRouter }
+         export type { AppRouter }
          ```
        - Create `routers` folder in `packages/api/src` and create a `_app.ts/index.ts` file in the `packages/api/src/server/routers` add this root tRPC route.
          ```ts
