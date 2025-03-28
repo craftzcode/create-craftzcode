@@ -882,8 +882,8 @@ config
          ```shell
          bun add @trpc/server @trpc/client @trpc/tanstack-react-query @tanstack/react-query@latest zod client-only server-only
          ```
-         - GIT COMMIT `git commit -m "chore(db): install drizzle ORM and neon database packages"`
-       - Create a `src` and `src/server` folder in your `packages/api` and create a `index.ts` file in the `packages/api/src/server` initialize the backend of tRPC.
+         - GIT COMMIT `git commit -m "chore(api): install tRPC packages"`
+       - Create a `src` and `src/server` folder in your `packages/api` and create a `init.ts` file in the `packages/api/src/server` initialize the backend of tRPC.
          ```ts
          import { cache } from 'react'
 
@@ -909,4 +909,26 @@ config
          export const createTRPCRouter = t.router
          export const createCallerFactory = t.createCallerFactory
          export const publicProcedure = t.procedure
+         ```
+       - Create `routers` folder in `packages/api/src` and create a `_app.ts` file in the `packages/api/src/server/routers` add this example tRPC route.
+         ```ts
+         import { z } from 'zod'
+
+         import { createTRPCRouter, publicProcedure } from '../init'
+
+         export const appRouter = createTRPCRouter({
+           hello: publicProcedure
+             .input(
+               z.object({
+                 text: z.string()
+               })
+             )
+             .query(opts => {
+               return {
+                 greeting: `hello ${opts.input.text}`
+               }
+             })
+         })
+         // export type definition of API
+         export type AppRouter = typeof appRouter
          ```
