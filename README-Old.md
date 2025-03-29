@@ -108,13 +108,20 @@ config
         ```json
         "clean": "git clean -xdf .cache .turbo node_modules"
         ```
-      - Add this two clean scripts in the root `package.json` of your turborepo.
-        ```json
-        "scripts": {
-          "clean": "git clean -xdf node_modules",
-          "clean:workspaces": "turbo run clean"
-        }
-        ```
+      - Add this clean scripts in the root `package.json` of your turborepo there's two option.
+        - Option 1: When using `pnpm` package manager
+          ```json
+          "scripts": {
+            "clean": "git clean -xdf node_modules",
+            "clean:workspaces": "turbo run clean"
+          }
+          ```
+        - Option 2: When using `bun` package manager
+          ```json
+          "scripts": {
+            "clean": "bunx turbo run clean && git clean -xdf .cache .turbo node_modules"
+          }
+          ```
       - Also add the clean script in `turbo.json`.
         ```json
         "tasks": {
@@ -363,7 +370,7 @@ config
             "postui-add": "prettier src --write --list-different",
             "generate:component": "turbo gen react-component",
             "lint": "eslint . --max-warnings 0",
-            "clean": "git clean -xdf .cache .turbo node_modules",
+            "clean": "git clean -xdf .cache .turbo node_modules"
             "check-types": "tsc --noEmit"
           },
           "devDependencies": {
@@ -476,71 +483,70 @@ config
       ```js
       import type { Metadata } from 'next'
 
-            import './globals.css'
+      import './globals.css'
 
-            import { Open_Sans } from 'next/font/google'
+      import { Open_Sans } from 'next/font/google'
 
-            const openSans = Open_Sans({
-              variable: '--font-open-sans',
-              display: 'swap',
-              subsets: ['latin']
-            })
+      const openSans = Open_Sans({
+        variable: '--font-open-sans',
+        display: 'swap',
+        subsets: ['latin']
+      })
 
-            export const metadata: Metadata = {
-              title: {
-                template: `%s - RHU II System`,
-                default: 'RHU II System'
-              },
-              description:
-                'A comprehensive management system for Rural Health Units providing free healthcare services including checkups, medicine, and more.',
-              keywords:
-                'RHU, rural health unit, healthcare management, patient management, medicine inventory, government healthcare, free medical services',
-              authors: [
-                {
-                  name: 'Ivan Gregor Tabalno'
-                }
-              ],
-              creator: 'Ivan Gregor Tabalno',
-              publisher: 'Ivan Gregor Tabalno',
-              applicationName: 'RHU II System',
-              category: 'Healthcare',
-              colorScheme: 'light dark',
-              themeColor: [
-                { media: '(prefers-color-scheme: light)', color: '#f8fafc' },
-                { media: '(prefers-color-scheme: dark)', color: '#0f172a' }
-              ],
-              formatDetection: {
-                telephone: true,
-                email: true,
-                address: true
-              },
-              openGraph: {
-                type: 'website',
-                locale: 'en_US',
-                url: 'https://craftzcode-system.gov.ph/',
-                title: 'RHU II System',
-                description:
-                  'Comprehensive healthcare management system for Rural Health Units offering free medical services, patient management, and inventory tracking.',
-                siteName: 'RHU II System',
-                images: [
-                  {
-                    url: '/images/og-image.jpg',
-                    width: 1200,
-                    height: 630,
-                    alt: 'RHU II System'
-                  }
-                ]
-              },
-              twitter: {
-                card: 'summary_large_image',
-                title: 'RHU II System',
-                description:
-                  'Government healthcare management system for Rural Health Units providing free medical services.',
-                images: ['/images/twitter-image.jpg']
-              },
-              manifest: '/manifest.json',
-             icons: {
-               icon: [
+      export const metadata: Metadata = {
+        title: {
+          template: `%s - RHU II System`,
+          default: 'RHU II System'
+        },
+      description:
+        'A comprehensive management system for Rural Health Units providing free healthcare services including checkups, medicine, and more.',
+        keywords:
+        'RHU, rural health unit, healthcare management, patient management, medicine inventory, government healthcare, free medical services',
+      authors: [
+        {
+          name: 'Ivan Gregor Tabalno'
+        }
+      ],
+      creator: 'Ivan Gregor Tabalno',
+      publisher: 'Ivan Gregor Tabalno',
+      applicationName: 'RHU II System',
+      category: 'Healthcare',
+      colorScheme: 'light dark',
+      themeColor: [
+        { media: '(prefers-color-scheme: light)', color: '#f8fafc' },
+        { media: '(prefers-color-scheme: dark)', color: '#0f172a' }
+      ],
+      formatDetection: {
+        telephone: true,
+        email: true,
+        address: true
+      },
+      openGraph: {
+        type: 'website',
+        locale: 'en_US',
+        url: 'https://craftzcode-system.gov.ph/',
+        title: 'RHU II System',
+        description: 'Comprehensive healthcare management system for Rural Health Units offering free medical services, patient management, and inventory tracking.',
+        siteName: 'RHU II System',
+        images: [
+          {
+            url: '/images/og-image.jpg',
+            width: 1200,
+            height: 630,
+            alt: 'RHU II System'
+          }
+        ]
+        },
+        twitter: {
+          card: 'summary_large_image',
+          title: 'RHU II System',
+          description:
+            'Government healthcare management system for Rural Health Units providing free medical services.',
+            images: ['/images/twitter-image.jpg']
+          },
+          manifest: '/manifest.json',
+          icons: {
+            icon: [
                   { url: '/favicon.ico' },
                   { url: '/icons/icon-16x16.png', sizes: '16x16', type: 'image/png' },
                   { url: '/icons/icon-32x32.png', sizes: '32x32', type: 'image/png' }
@@ -637,7 +643,7 @@ config
               "studio": "bunx drizzle-kit studio",
               "lint": "eslint . --max-warnings 0",
               "check-types": "tsc --noEmit",
-              "clean": "git clean -xdf .cache .turbo node_modules"
+              "clean": "git clean -xdf .cache .turbo dist node_modules"
             },
             "devDependencies": {
               "@craftzcode/eslint-config": "*",
@@ -869,7 +875,7 @@ config
            "dev": "tsc",
            "lint": "eslint . --max-warnings 0",
            "check-types": "tsc --noEmit",
-           "clean": "git clean -xdf .cache .turbo node_modules"
+           "clean": "git clean -xdf .cache .turbo dist node_modules"
          },
          "devDependencies": {
            "@craftzcode/eslint-config": "*",
