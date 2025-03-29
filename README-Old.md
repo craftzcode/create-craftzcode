@@ -293,7 +293,9 @@ Your choice between them should depend on your project's specific needs regardin
           "$schema": "https://json.schemastore.org/tsconfig",
           "extends": "./base.json",
           "compilerOptions": {
-            "outDir": "dist",
+            // Use this path mapping to automatically generate compiled files in the correct location.
+            // All compiled TypeScript files for a package will be output into the `dist` folder of that specific package (e.g., packages/api/dist).
+            "outDir": "${configDir}/dist",
             "module": "Preserve",
             "moduleResolution": "Bundler"
           }
