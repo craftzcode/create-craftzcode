@@ -188,7 +188,7 @@ Your choice between them should depend on your project's specific needs regardin
     - Package Manager: `Bun`
     - Update Dependencies in all Workspace: `bun update`
   
-3. Protect the main branch
+2. Protect the main branch
    - Option 1: Add Husky (Pre-Commit) for Automation of Git Commit
      - CLI: `bun add --dev husky`
      - Init Husky: `bunx husky init`
@@ -229,7 +229,7 @@ Your choice between them should depend on your project's specific needs regardin
        
    - Option 2: Go to the  `Preferences > VS Code Settings` search for the `Git Branch Protection` and add the `main` in the list.
 
-4.  Remove bolierplates and add script for `clean` and running dev with filtering both `docs` and `web`
+3.  Remove bolierplates and add script for `clean` and running dev with filtering both `docs` and `web`
     - Remove boilerplates
       - Delete `page.module.css` and all of code inside of `page.tsx` both on `docs and web`.
       - GIT COMMIT: `git commit -m "refactor(docs|web): delete boilerplates"`
@@ -270,10 +270,10 @@ Your choice between them should depend on your project's specific needs regardin
         ```
       - GIT COMMIT: `git commit -m "chore(package): add workspace-specific dev scripts"`
 
-5.  Create a Github Repository
+4.  Create a Github Repository
     - Add the github repository to the project and push the main branch.
 
-6.  Add Cursor Rules, Rename Workspace, Configure Typescript & Eslint
+5.  Add Cursor Rules, Rename Workspace, Configure Typescript & Eslint
     - GIT BRANCH: `git checkout -b infrastructure/chore/1-cursor-alias-config`
       
     - Add Cursor Rules
@@ -287,7 +287,26 @@ Your choice between them should depend on your project's specific needs regardin
     - Configure TypeScript & ESLint
       - Create a new folder named `config` in the root of your project.
       - Move the `typescript-config` and `eslint-config` into the `config` folder.
+      - Create a `internal-library.json` in `config/typescript-config` directory to centralize custom TypeScript settings for internal libraries.
+        ```json
+        {
+          "$schema": "https://json.schemastore.org/tsconfig",
+          "extends": "@rhu-ii/typescript-config/base.json",
+          "compilerOptions": {
+            "outDir": "dist",
+            "module": "Preserve",
+            "moduleResolution": "Bundler"
+          }
+        }
+        ```
       - Add the `config` folder to `workspaces` in the `package.json` of the root of your project.
+        ```json
+        "workspaces": [
+          "apps/*",
+          "packages/*",
+          "config/*"
+        ]
+        ```
       - Reinstall packages.
         - CLI: `bun install`
     
@@ -295,7 +314,7 @@ Your choice between them should depend on your project's specific needs regardin
 
     - PULL REQUEST TITLE: `chore(infrastructure): add cursor rules, update aliases, and reorganize configs`
 
-7.  Setup Prettier, Tailwind CSS, and Shadcn UI Shared Configs
+6.  Setup Prettier, Tailwind CSS, and Shadcn UI Shared Configs
     ```
     craftzcode-stack/
     ├── config/
@@ -608,7 +627,7 @@ Your choice between them should depend on your project's specific needs regardin
       - Typescript and Eslint Shared Config
         - Always add `typescript`, `"@craftzcode/typescript-config": "*"` and `eslint`, `"@craftzcode/eslint-config": "*"` on the `package.json` where workspace are you currently working on it.
 
-8.  Add full `metadata` and change `font family`
+7.  Add full `metadata` and change `font family`
     - GIT BRANCH: `git checkout -b frontend/feat/3-metadata-manifest-font-family`
       
     - Update both root `layout.tsx` of `docs` and `web` to add a full `metadata` and change `font family`.
@@ -734,7 +753,7 @@ Your choice between them should depend on your project's specific needs regardin
   
     - PULL REQUEST TITLE: `feat(frontend): update docs/web layout with full metadata also change font family and add manifest.json`
      
-9. Create the Navigation Menu and Main Component
+8. Create the Navigation Menu and Main Component
    - GIT BRANCH: `git checkout -b frontend/feat/4-navigation-menu-main-layout`
 
    - Navigation Menu
@@ -745,7 +764,7 @@ Your choice between them should depend on your project's specific needs regardin
 
    - PULL REQUEST TITLE: `feat(ui): install remix icon, add responsive navigation & main layout`
 
-10. Setup DB package for Drizzle ORM and Neon Database
+9. Setup DB package for Drizzle ORM and Neon Database
    - GIT BRANCH: `git checkout -b backend/feat/5-db`
 
    - Setup `db` package
@@ -824,13 +843,9 @@ Your choice between them should depend on your project's specific needs regardin
      - Add `tsconfig.json` in `packages/db` with the following code.
        ```json
        {
-       "extends": "@craftzcode/typescript-config/base.json",
-       "compilerOptions": {
-         "module": "Preserve",
-         "moduleResolution": "Bundler"
-       },
+       "extends": "@craftzcode/typescript-config/internal-library.json",
        "include": ["src"],
-       "exclude": ["node_modules"]
+       "exclude": ["node_modules", "dist"]
        }
        ```
      - GIT COMMIT: `git commit -m "chore(db): configure TS and ESLint"`
@@ -977,7 +992,7 @@ Your choice between them should depend on your project's specific needs regardin
          ```
          - GIT COMMIT: `git commit -m "feat(db): add drizzle.config.ts for Drizzle Kit configuration"`
 
-9. Setup API package for tRPC
+10. Setup API package for tRPC
    - GIT BRANCH: ``
 
    - Setup `api` package
@@ -1035,13 +1050,12 @@ Your choice between them should depend on your project's specific needs regardin
      - Add `tsconfig.json` in `packages/api` with the following code.
        ```json
        {
-       "extends": "@craftzcode/typescript-config/react-library.json",
+       "extends": "@craftzcode/typescript-config/internal-library.json",
        "compilerOptions": {
-         "module": "Preserve",
-         "moduleResolution": "Bundler"
+         "jsx": "react-jsx"
        },
        "include": ["src"],
-       "exclude": ["node_modules"]
+       "exclude": ["node_modules", "dist"]
        }
        ```
      - GIT COMMIT: `git commit -m "chore(api): configure TS and ESLint"`
@@ -1267,6 +1281,7 @@ Your choice between them should depend on your project's specific needs regardin
          ```
        - Initialize the connection of `tRPC` and `Next.js`.
          - Add the `@craftzcode/api` package in `dependencies` of the `web/packages.json`.
+         - Mount the provider in the root of your application `(e.g. app/layout.tsx when using Next.js)`.
          - Create the `app/api/trpc/[tprc]/route.ts` with the following code.
            ```ts
            import { appRouter, createTRPCContext } from '@craftzcode/api'
