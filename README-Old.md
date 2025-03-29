@@ -50,6 +50,137 @@ config
   └─ typescript-config
        └─ Shared TSConfig to extend from
 ```
+# Package Managers in Turborepo: pnpm vs Bun
+
+Turborepo works with various package managers, with pnpm and Bun being popular choices for monorepo management. This document explains their differences, particularly regarding dependency hoisting and `node_modules` structure.
+
+## pnpm in Turborepo
+
+### Basic Usage
+
+```bash
+# Install all dependencies in all workspaces
+pnpm install
+
+# Install a specific dependency in all workspaces
+pnpm add -w lodash
+
+# Install dependencies in a specific workspace
+pnpm --filter=my-app install
+
+# Add a specific dependency to a specific workspace
+pnpm --filter=my-app add react
+
+# Run a specific task across all packages
+pnpm turbo run build
+```
+
+### Dependency Structure
+
+pnpm uses a unique "symlinked" structure:
+
+- Dependencies are stored in a global store (`.pnpm` folder)
+- Each package has its own `node_modules` folder
+- Dependencies are symlinked from the store to each package's `node_modules`
+- By default, pnpm uses strict isolation with a "phantom" dependency prevention
+
+```
+project/
+├── node_modules/
+│   ├── .pnpm/ (content store)
+│   └── [symlinks to direct dependencies]
+├── packages/
+│   ├── app1/
+│   │   ├── node_modules/ (symlinks to app1's deps)
+│   │   └── package.json
+│   └── app2/
+│       ├── node_modules/ (symlinks to app2's deps)
+│       └── package.json
+└── package.json
+```
+
+## Bun in Turborepo
+
+### Basic Usage
+
+```bash
+# Install all dependencies in all workspaces
+bun install
+
+# Install a specific dependency in all workspaces
+bun add -w lodash
+
+# Install dependencies in a specific workspace
+bun install --cwd packages/my-app
+
+# Add a specific dependency to a specific workspace
+bun add react --cwd packages/my-app
+
+# Run a specific task across all packages
+bun turbo run build
+```
+
+### Dependency Structure
+
+Bun uses a full hoisting approach to dependency management by default:
+
+- All dependencies are hoisted to the root `node_modules` folder
+- Packages typically don't have their own `node_modules` directories
+- This creates a flat dependency structure similar to npm's hoisting
+
+```
+project/
+├── node_modules/ (all hoisted dependencies)
+├── packages/
+│   ├── app1/
+│   │   └── package.json
+│   └── app2/
+│       └── package.json
+└── package.json
+```
+
+## Key Differences
+
+| Feature | pnpm | Bun |
+|---------|------|-----|
+| Default hoisting | None (strict isolation) | Full (all deps hoisted to root) |
+| Disk efficiency | Very high (content-addressable store) | Good (hoisting reduces duplication) |
+| Installation speed | Fast | Very fast (often 2-5x faster than pnpm) |
+| Node modules structure | Symlinked from central store | Single root node_modules |
+| Phantom dependency prevention | Built-in protection | Less strict (like npm/Yarn) |
+| Configuration complexity | More options, more complex | Simpler options |
+
+## Practical Implications
+
+### When to Choose pnpm in Turborepo
+
+- When strict dependency isolation is critical
+- When you need guaranteed prevention of phantom dependencies
+- When disk space efficiency is a primary concern
+- When you require fine-grained control over hoisting behavior
+
+### When to Choose Bun in Turborepo
+
+- When installation speed is the top priority
+- When you prefer a simpler configuration with fewer options
+- When you want familiar npm/Yarn-like behavior but with better performance
+- When your project already works well with traditional hoisting approaches
+
+## Performance Comparison
+
+Bun generally offers faster installation times, while pnpm provides better disk space efficiency:
+
+- Bun: Optimized for speed, often 2-5x faster than pnpm for installations
+- pnpm: Optimized for disk usage, can save significant space in large monorepos
+
+## Conclusion
+
+Both package managers work well with Turborepo, but they take different approaches to dependency management:
+
+- **pnpm** prioritizes correctness and isolation with its unique symlink structure
+- **Bun** prioritizes speed and simplicity with a more traditional but highly optimized approach
+
+Your choice between them should depend on your project's specific needs regarding dependency isolation, installation speed, and disk space efficiency.
 
 1.  Create Turborepo Project
     - Install `turbo` globally [Turbo Installation](https://turbo.build/repo/docs/getting-started/installation#installing-turbo)
