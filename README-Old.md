@@ -291,7 +291,7 @@ Your choice between them should depend on your project's specific needs regardin
         ```json
         {
           "$schema": "https://json.schemastore.org/tsconfig",
-          "extends": "@rhu-ii/typescript-config/base.json",
+          "extends": "./base.json",
           "compilerOptions": {
             "outDir": "dist",
             "module": "Preserve",
