@@ -1240,33 +1240,34 @@ Your choice between them should depend on your project's specific needs regardin
            router: appRouter,
            queryClient: getQueryClient
          })
+         
          // If your router is on a separate server, pass a client:
-         createTRPCOptionsProxy({
-           client: createTRPCClient({
-             links: [httpLink({ url: '...' })]
-           }),
-           queryClient: getQueryClient
-         })
+         // createTRPCOptionsProxy({
+         //   client: createTRPCClient({
+         //     links: [httpLink({ url: '...' })]
+         //   }),
+         //   queryClient: getQueryClient
+         // })
 
          // You can also create a prefetch and HydrateClient helper functions to make it a bit more consice and reusable
-         // export function HydrateClient(props: { children: React.ReactNode }) {
-         //   const queryClient = getQueryClient();
-         //   return (
-         //     <HydrationBoundary state={dehydrate(queryClient)}>
-         //       {props.children}
-         //     </HydrationBoundary>
-         //   );
-         // }
-         // export function prefetch<T extends ReturnType<TRPCQueryOptions<any>>>(
-         //   queryOptions: T,
-         // ) {
-         //   const queryClient = getQueryClient();
-         //   if (queryOptions.queryKey[1]?.type === 'infinite') {
-         //     void queryClient.prefetchInfiniteQuery(queryOptions as any);
-         //   } else {
-         //     void queryClient.prefetchQuery(queryOptions);
-         //   }
-         // }
+         export function HydrateClient(props: { children: React.ReactNode }) {
+           const queryClient = getQueryClient();
+           return (
+            <HydrationBoundary state={dehydrate(queryClient)}>
+              {props.children}
+            </HydrationBoundary>
+          );
+         }
+         export function prefetch<T extends ReturnType<TRPCQueryOptions<any>>>(
+           queryOptions: T,
+         ) {
+           const queryClient = getQueryClient();
+           if (queryOptions.queryKey[1]?.type === 'infinite') {
+             void queryClient.prefetchInfiniteQuery(queryOptions as any);
+           } else {
+             void queryClient.prefetchQuery(queryOptions);
+           }
+         }
 
          // Then you can use it like this
          // import { HydrateClient, prefetch, trpc } from '~/trpc/server';
@@ -1285,9 +1286,9 @@ Your choice between them should depend on your project's specific needs regardin
          //   );
          // }
          ```
-       - Initialize the connection of `tRPC` and `Next.js`.
+       - Initialize the connection of `tRPC` (packages/api) and `Next.js` (apps/web).
          - Add the `@craftzcode/api` package in `dependencies` of the `web/packages.json`.
-         - Mount the provider in the root of your application `(e.g. app/layout.tsx when using Next.js)`.
+         - Mount the `TRPCReactProvider` from `packages/api/src/client/index.ts` in the root of your application `(e.g. app/layout.tsx when using Next.js)`.
          - Create the `app/api/trpc/[tprc]/route.ts` with the following code.
            ```ts
            import { createTRPCContext } from '@rhu-ii/api'
