@@ -1078,6 +1078,8 @@ Your choice between them should depend on your project's specific needs regardin
          ```ts
          import { cache } from 'react'
 
+         import superjson from 'superjson'
+
          import { initTRPC } from '@trpc/server'
 
          import { AppRouter, appRouter } from './server/routers'
@@ -1096,7 +1098,7 @@ Your choice between them should depend on your project's specific needs regardin
            /**
             * @see https://trpc.io/docs/server/data-transformers
             */
-           // transformer: superjson,
+           transformer: superjson,
          })
          // Base router and procedure helpers
          export const createTRPCRouter = t.router
@@ -1159,6 +1161,8 @@ Your choice between them should depend on your project's specific needs regardin
          // ^-- to make sure we can mount the Provider from a server component
          import { useState } from 'react'
 
+         import superjson from 'superjson'
+         
          import type { QueryClient } from '@tanstack/react-query'
          import { QueryClientProvider } from '@tanstack/react-query'
          import { createTRPCClient, httpBatchLink } from '@trpc/client'
@@ -1203,7 +1207,7 @@ Your choice between them should depend on your project's specific needs regardin
               createTRPCClient<AppRouter>({
                 links: [
                   httpBatchLink({
-                    // transformer: superjson, <-- if you use a data transformer
+                    transformer: superjson, // <-- if you use a data transformer
                     url: getUrl()
                   })
                 ]
