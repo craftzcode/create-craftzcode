@@ -782,11 +782,11 @@ Your choice between them should depend on your project's specific needs regardin
             "exports": {
               ".": {
                 "types": "./dist/index.d.ts",
-                "default": "./src/index.ts"
+                "default": "./dist/index.js"
               },
               "./schema": {
-                "types": "./dist/src/schema/index.d.ts",
-                "default": "./src/schema/index.ts"
+                "types": "./dist/schema/index.d.ts",
+                "default": "./dist/schema/index.js"
               }
             },
             "scripts": {
@@ -1007,16 +1007,20 @@ Your choice between them should depend on your project's specific needs regardin
          "type": "module",
          "exports": {
            ".": {
-             "types": "./dist/src/index.d.ts",
-             "default": "./src/index.ts"
+             "types": "./dist/index.d.ts",
+             "default": "./dist/index.ts"
            },
            "./client": {
-             "types": "./dist/src/client/index.d.tsx",
-             "default": "./src/client/index.tsx"
+             "types": "./dist/client/index.d.tsx",
+             "default": "./dist/client/index.js"
            },
            "./server": {
-             "types": "./dist/src/server/index.d.tsx",
-             "default": "./src/server/index.tsx"
+             "types": "./dist/server/index.d.tsx",
+             "default": "./dist/server/index.js"
+           }
+           "./server/routers": {
+             "types": "./dist/server/index.d.ts",
+             "default": "./dist/server/index.js"
            }
          },
          "scripts": {
@@ -1067,7 +1071,7 @@ Your choice between them should depend on your project's specific needs regardin
      - Option 2: Follow this guide.
        - Go to the `packages/api` folder in shell then install `tRPC` packages.
          ```shell
-         bun add @trpc/server @trpc/client @trpc/tanstack-react-query @tanstack/react-query@latest zod client-only server-only
+         bun add @trpc/server @trpc/client @trpc/tanstack-react-query @tanstack/react-query@latest zod client-only server-only superjson
          ```
          - GIT COMMIT `git commit -m "chore(api): install tRPC packages"`
        - Create a `src` folder in your `packages/api` and create a `init.ts/index.ts` file in the `packages/api/src` initialize the backend of tRPC.
@@ -1286,7 +1290,8 @@ Your choice between them should depend on your project's specific needs regardin
          - Mount the provider in the root of your application `(e.g. app/layout.tsx when using Next.js)`.
          - Create the `app/api/trpc/[tprc]/route.ts` with the following code.
            ```ts
-           import { appRouter, createTRPCContext } from '@craftzcode/api'
+           import { createTRPCContext } from '@rhu-ii/api'
+           import { appRouter } from '@rhu-ii/api/server/routers'
 
            import { fetchRequestHandler } from '@trpc/server/adapters/fetch'
 
