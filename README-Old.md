@@ -13,7 +13,6 @@ Expo
 
 Stack Components
 Below is an overview of the project structure and its key components:
-
 ```
 apps
   ├─ docs
@@ -53,11 +52,12 @@ config
 ```
 
 1.  Create Turborepo Project
+    - Install `turbo` globally [Turbo Installation](https://turbo.build/repo/docs/getting-started/installation#installing-turbo)
     - CLI: `pnpm dlx create-turbo@latest craftzcode-stack`
     - Package Manager: `Bun`
     - Update Dependencies in all Workspace: `bun update`
   
-2. Protect the main branch
+3. Protect the main branch
    - Option 1: Add Husky (Pre-Commit) for Automation of Git Commit
      - CLI: `bun add --dev husky`
      - Init Husky: `bunx husky init`
@@ -98,7 +98,7 @@ config
        
    - Option 2: Go to the  `Preferences > VS Code Settings` search for the `Git Branch Protection` and add the `main` in the list.
 
-3.  Remove bolierplates and add script for `clean` and running dev with filtering both `docs` and `web`
+4.  Remove bolierplates and add script for `clean` and running dev with filtering both `docs` and `web`
     - Remove boilerplates
       - Delete `page.module.css` and all of code inside of `page.tsx` both on `docs and web`.
       - GIT COMMIT: `git commit -m "refactor(docs|web): delete boilerplates"`
@@ -108,20 +108,21 @@ config
         ```json
         "clean": "git clean -xdf .cache .turbo node_modules"
         ```
-      - Add this clean scripts in the root `package.json` of your turborepo there's two option.
-        - Option 1: When using `pnpm` package manager
+      - Add this clean scripts in the root `package.json` of your turborepo there's three options.
+        - Option 1: When using `pnpm` package manager.
           ```json
           "scripts": {
             "clean": "git clean -xdf node_modules",
             "clean:workspaces": "turbo run clean"
           }
           ```
-        - Option 2: When using `bun` package manager
+        - Option 2: When using `bun` package manager.
           ```json
           "scripts": {
             "clean": "bunx turbo run clean && git clean -xdf .cache .turbo node_modules"
           }
           ```
+          - Option 3: Install `turbo` globally [Turbo Installation](https://turbo.build/repo/docs/getting-started/installation#installing-turbo) to work the `turbo` command properly. 
       - Also add the clean script in `turbo.json`.
         ```json
         "tasks": {
@@ -138,10 +139,10 @@ config
         ```
       - GIT COMMIT: `git commit -m "chore(package): add workspace-specific dev scripts"`
 
-4.  Create a Github Repository
+5.  Create a Github Repository
     - Add the github repository to the project and push the main branch.
 
-5.  Add Cursor Rules, Rename Workspace, Configure Typescript & Eslint
+6.  Add Cursor Rules, Rename Workspace, Configure Typescript & Eslint
     - GIT BRANCH: `git checkout -b infrastructure/chore/1-cursor-alias-config`
       
     - Add Cursor Rules
@@ -163,7 +164,7 @@ config
 
     - PULL REQUEST TITLE: `chore(infrastructure): add cursor rules, update aliases, and reorganize configs`
 
-6.  Setup Prettier, Tailwind CSS, and Shadcn UI Shared Configs
+7.  Setup Prettier, Tailwind CSS, and Shadcn UI Shared Configs
     ```
     craftzcode-stack/
     ├── config/
@@ -476,7 +477,7 @@ config
       - Typescript and Eslint Shared Config
         - Always add `typescript`, `"@craftzcode/typescript-config": "*"` and `eslint`, `"@craftzcode/eslint-config": "*"` on the `package.json` where workspace are you currently working on it.
 
-7.  Add full `metadata` and change `font family`
+8.  Add full `metadata` and change `font family`
     - GIT BRANCH: `git checkout -b frontend/feat/3-metadata-manifest-font-family`
       
     - Update both root `layout.tsx` of `docs` and `web` to add a full `metadata` and change `font family`.
@@ -602,7 +603,7 @@ config
   
     - PULL REQUEST TITLE: `feat(frontend): update docs/web layout with full metadata also change font family and add manifest.json`
      
-8. Create the Navigation Menu and Main Component
+9. Create the Navigation Menu and Main Component
    - GIT BRANCH: `git checkout -b frontend/feat/4-navigation-menu-main-layout`
 
    - Navigation Menu
@@ -613,7 +614,7 @@ config
 
    - PULL REQUEST TITLE: `feat(ui): install remix icon, add responsive navigation & main layout`
 
-9. Setup DB package for Drizzle ORM and Neon Database
+10. Setup DB package for Drizzle ORM and Neon Database
    - GIT BRANCH: `git checkout -b backend/feat/5-db`
 
    - Setup `db` package
