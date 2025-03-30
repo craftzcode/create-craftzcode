@@ -1241,7 +1241,7 @@ Your choice between them should depend on your project's specific needs regardin
 
          import { makeQueryClient } from '../client/query-client'
          import { createTRPCContext } from '../index'
-         import { appRouter } from './routers/index'
+         import { appRouter } from './routers'
          import { dehydrate, HydrationBoundary } from '@tanstack/react-query'
 
          // IMPORTANT: Create a stable getter for the query client that
