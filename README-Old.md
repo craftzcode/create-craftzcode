@@ -1426,3 +1426,4 @@ Your choice between them should depend on your project's specific needs regardin
      export const POST = handle(app)
      ```
      - GIT COMMIT: `git commit -m "feat(web): update API route for Hono and tRPC integration"`
+   - PULL REQUEST TITLE: `feat(backend): integrate Hono with tRPC`
