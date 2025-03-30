@@ -772,7 +772,7 @@ Your choice between them should depend on your project's specific needs regardin
    - Main Layout
      - GIT COMMIT: `git commit -m "feat(layout): add responsive main component for all routes"`
 
-   - PULL REQUEST TITLE: `feat(ui): install remix icon, add responsive navigation & main layout`
+   - PULL REQUEST TITLE: `feat(frontend): install remix icon, add responsive navigation & main layout`
 
 9. Setup DB package for Drizzle ORM and Neon Database
    - GIT BRANCH: `git checkout -b backend/feat/5-db`
@@ -918,7 +918,7 @@ Your choice between them should depend on your project's specific needs regardin
          import { boolean, pgTable, text, timestamp, uuid } from 'drizzle-orm/pg-core'
 
          export const user = pgTable('user', {
-           id: uuid('id').primaryKey(),
+           id: uuid('id').primaryKey().defaultRandom(),
            name: text('name').notNull(),
            email: text('email').notNull().unique(),
            emailVerified: boolean('email_verified').notNull(),
@@ -928,7 +928,7 @@ Your choice between them should depend on your project's specific needs regardin
          })
 
          export const session = pgTable('session', {
-           id: uuid('id').primaryKey(),
+           id: uuid('id').primaryKey().defaultRandom(),
            expiresAt: timestamp('expires_at').notNull(),
            token: text('token').notNull().unique(),
            createdAt: timestamp('created_at').notNull(),
@@ -941,7 +941,7 @@ Your choice between them should depend on your project's specific needs regardin
          })
 
          export const account = pgTable('account', {
-           id: uuid('id').primaryKey(),
+           id: uuid('id').primaryKey().defaultRandom(),
            accountId: text('account_id').notNull(),
            providerId: text('provider_id').notNull(),
            userId: text('user_id')
@@ -959,7 +959,7 @@ Your choice between them should depend on your project's specific needs regardin
          })
 
          export const verification = pgTable('verification', {
-           id: uuid('id').primaryKey(),
+           id: uuid('id').primaryKey().defaultRandom(),
            identifier: text('identifier').notNull(),
            value: text('value').notNull(),
            expiresAt: timestamp('expires_at').notNull(),
@@ -1001,7 +1001,9 @@ Your choice between them should depend on your project's specific needs regardin
          })
          ```
          - GIT COMMIT: `git commit -m "feat(db): add drizzle.config.ts for Drizzle Kit configuration"`
-
+           
+    - PULL REQUEST TITLE: `feat(backend): set up db package with Drizzle ORM, and Neon Database`
+      
 10. Setup API package for tRPC
    - GIT BRANCH: `git checkout -b backend/feat/6-api`
 
@@ -1347,6 +1349,7 @@ Your choice between them should depend on your project's specific needs regardin
 
            export default app
            ```
+           
   - Pull Request Title: `feat(backend): add tRPC for end-to-end type safety`
     
 11. Integrate Hono.js in tRPC
@@ -1426,4 +1429,5 @@ Your choice between them should depend on your project's specific needs regardin
      export const POST = handle(app)
      ```
      - GIT COMMIT: `git commit -m "feat(web): update API route for Hono and tRPC integration"`
+       
    - PULL REQUEST TITLE: `feat(backend): integrate Hono with tRPC`
