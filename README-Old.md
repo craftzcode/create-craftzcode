@@ -234,6 +234,14 @@ Your choice between them should depend on your project's specific needs regardin
       - Delete `page.module.css` and all of code inside of `page.tsx` both on `docs and web`.
       - GIT COMMIT: `git commit -m "refactor(docs|web): delete boilerplates"`
 
+    - Add `paths` in `compilerOptions` of `tsconfig.json` both `docs` and `web`
+      ```json
+      "paths": {
+        "@/*": ["./src/*"]
+      }
+      ```
+      - GIT COMMIT: `git commit -m "refactor(docs|web): add paths in compilerOptions of tsconfig"`
+
     - Add clean script
       - Add the clean script in all workspace `package.json`.
         ```json
