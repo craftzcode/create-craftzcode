@@ -1386,3 +1386,13 @@ Your choice between them should depend on your project's specific needs regardin
      export type AppRouter = typeof appRouter
      ```
      - GIT COMMIT: `git commit -m "refactor(api): update createTRPCRouter and publicProcedure import in packages/api/src/server/routers/index.ts and add status procedure"`
+   - Delete the old trpc route at `apps/web/src/app/api/trpc/[trpc]/route.ts`.
+   - Create a new route at `apps/web/src/app/api/[[...route]]/route.ts` to initialize the Hono + tRPC server middleware.
+     ```ts
+     import app from '@rhu-ii/api
+     import { handle } from 'hono/vercel'
+
+     export const GET = handle(app)
+     export const POST = handle(app)
+     ```
+     - GIT COMMIT: `git commit -m "feat(web): update API route for Hono and tRPC integration"`
