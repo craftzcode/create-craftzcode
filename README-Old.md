@@ -1081,7 +1081,7 @@ Your choice between them should depend on your project's specific needs regardin
          ```shell
          bun add @trpc/server @trpc/client @trpc/tanstack-react-query @tanstack/react-query@latest zod client-only server-only superjson
          ```
-         - GIT COMMIT `git commit -m "chore(api): install tRPC packages"`
+         - GIT COMMIT: `git commit -m "chore(api): install tRPC packages"`
        - Create a `src` folder in your `packages/api` and create a `init.ts/index.ts` file in the `packages/api/src` initialize the backend of tRPC.
          ```ts
          import { cache } from 'react'
@@ -1318,3 +1318,71 @@ Your choice between them should depend on your project's specific needs regardin
            export { handler as GET, handler as POST }
            ```
   - Pull Request Title: `feat(backend): add tRPC for end-to-end type safety`
+    
+11. Integrate Hono.js in tRPC
+   - GIT BRANCH: `git checkout -b backend/feat/7-hono-trpc`
+   - Go to the `packages/api` folder in shell then install `hono` packages.
+     ```shell
+     bun add hono @hono/trpc-server
+     ```
+     - GIT COMMIT: `git commit -m "chore(api): install hono and @hono/trpc-server dependencies"`
+   - Create a `trpc.ts` in `packages/api/src` and moved all tRPC initialization code from `packages/api/src/index.ts` to `packages/api/src/trpc.ts`.
+     - GIT COMMIT: `git commit -m "refactor(api): move tRPC initialization code to trpc.ts"`
+   - Update `packages/api/src/index.ts` to initialize Hono with tRPC server middleware.
+     ```ts
+     import { trpcServer } from '@hono/trpc-server' // Deno 'npm:@hono/trpc-server'
+     import { Hono } from 'hono'
+
+     import { appRouter } from './server/routers'
+     import { createTRPCContext } from './trpc'
+
+     const app = new Hono().basePath('/api')
+
+     app.use(
+       '/trpc/*',
+       trpcServer({
+         endpoint: '/api/trpc',
+         router: appRouter,
+         createContext: createTRPCContext
+       })
+     )
+
+     app.get('/status', c => {
+       return c.json({
+         message: 'Hono Router: Hono + tRPC'
+       })
+     })
+
+     export default app
+     ```
+     - GIT COMMIT: `git commit -m "feat(api): initialize Hono with tRPC server middleware"`
+   - Update `createTRPCContext` import from `'../index'` to `'../trpc'` in `packages/api/src/server/index.tsx` for consistency.
+     - GIT COMMIT: `git commit -m "refactor(api): update createTRPCContext import in packages/api/src/server/index.tsx"`
+   - Update `createTRPCRouter` and `publicProcedure` import from `'../../index'` to `'../../trpc'` in `packages/api/src/server/routers/index.ts` and add a new status publicProcedure to verify the tRPC router functionality.
+     ```ts
+     import { z } from 'zod'
+
+     import { createTRPCRouter, publicProcedure } from '../../trpc'
+
+     export const appRouter = createTRPCRouter({
+      status: publicProcedure.query(() => {
+        return {
+          message: 'tRPC Router: Hono + tRPC'
+        }
+      }),
+      hello: publicProcedure
+        .input(
+          z.object({
+            text: z.string()
+          })
+        )
+         .query(opts => {
+           return {
+             greeting: `hello ${opts.input.text}`
+           }
+         })
+     })
+     // export type definition of API
+     export type AppRouter = typeof appRouter
+     ```
+     - GIT COMMIT: `git commit -m "refactor(api): update createTRPCRouter and publicProcedure import in packages/api/src/server/routers/index.ts and add status procedure"`
