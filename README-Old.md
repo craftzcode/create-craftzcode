@@ -1003,7 +1003,7 @@ Your choice between them should depend on your project's specific needs regardin
          - GIT COMMIT: `git commit -m "feat(db): add drizzle.config.ts for Drizzle Kit configuration"`
 
 10. Setup API package for tRPC
-   - GIT BRANCH: ``
+   - GIT BRANCH: `git checkout -b backend/feat/6-api`
 
    - Setup `api` package
      - Create a folder called `api` inside the `packages` folder.
@@ -1317,3 +1317,4 @@ Your choice between them should depend on your project's specific needs regardin
              })
            export { handler as GET, handler as POST }
            ```
+  - Pull Request Title: `feat(backend): add tRPC for end-to-end type safety`
