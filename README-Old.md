@@ -1607,4 +1607,4 @@ Your choice between them should depend on your project's specific needs regardin
        export default app
        ```
        - GIT COMMIT: `git commit -m "feat(api): integrate better-auth handler with Hono and tRPC"`
-     
+  - PULL REQUEST TITLE: `feat(auth, api): integrate better-auth with Hono & tRPC`   
