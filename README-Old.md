@@ -1191,6 +1191,7 @@ Your choice between them should depend on your project's specific needs regardin
            if (!browserQueryClient) browserQueryClient = makeQueryClient()
            return browserQueryClient
          }
+         
          function getUrl() {
            const base = (() => {
               if (typeof window !== 'undefined') return ''
@@ -1199,6 +1200,7 @@ Your choice between them should depend on your project's specific needs regardin
            })()
            return `${base}/api/trpc`
          }
+         
          export function TRPCReactProvider(
            props: Readonly<{
              children: React.ReactNode
