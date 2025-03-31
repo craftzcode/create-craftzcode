@@ -1305,7 +1305,7 @@ Your choice between them should depend on your project's specific needs regardin
        - Initialize the connection of `tRPC` (packages/api) and `Next.js` (apps/web).
          - Add the `@craftzcode/api` package in `dependencies` of the `web/packages.json`.
          - Mount the `TRPCReactProvider` from `packages/api/src/client/index.ts` in the root of your application `(e.g. app/layout.tsx when using Next.js)`.
-         - Create the `app/api/trpc/[tprc]/route.ts` with the following code.
+         - Create `trpc` api route for the `Next.js` `tRPC` adapter `app/api/trpc/[tprc]/route.ts` with the following code.
            ```ts
            import { createTRPCContext } from '@rhu-ii/api'
            import { appRouter } from '@rhu-ii/api/server/routers'
