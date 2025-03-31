@@ -1223,6 +1223,7 @@ Your choice between them should depend on your project's specific needs regardin
                 ]
               })
             )
+         
             return (
              <QueryClientProvider client={queryClient}>
                 <TRPCProvider trpcClient={trpcClient} queryClient={queryClient}>
