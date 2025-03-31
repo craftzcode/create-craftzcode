@@ -1754,4 +1754,60 @@ Your choice between them should depend on your project's specific needs regardin
          })
          ```
          - GIT COMMIT: `git commit -m "feat(api): create protectedProcedure using custom context"`
+       - Pass `hono` context to `createTRPCContext` to pass the `HTTP Request` of the `hono` so the `headers` will be available in `createTRPCContext` so we can pass the `headers` in `better-auth` api get session.
+         ```ts
+         import { trpcServer } from '@hono/trpc-server' // Deno 'npm:@hono/trpc-server'
+
+         import { auth } from '@rhu-ii/auth'
+         import { Hono } from 'hono'
+         import { logger } from 'hono/logger'
+
+         import { createTRPCContext } from './lib/context'
+         import { appRouter } from './server/routers'
+
+         /**
+          * We use basePath('/api') to prefix all routes with '/api'.
+          * This ensures our API endpoints are properly namespaced under /api/
+          * (e.g., localhost:3000/api/status instead of localhost:3000/status).
+          *
+          * Benefits:
+          * - Clear separation between API routes and other routes (like frontend pages)
+          * - Better organization and maintainability
+          * - Follows REST API best practices for route structuring
+          */
+         const app = new Hono().basePath('/api')
+
+         app.use(logger())
+
+         app.on(['POST', 'GET'], '/api/auth/**', c => auth.handler(c.req.raw))
+
+         app.use(
+           '/trpc/*',
+           trpcServer({
+             /**
+              * The endpoint parameter defines the full URL path for tRPC API requests.
+              * We set it to '/api/trpc' to match our basePath prefix + the trpc route.
+              *
+              * This ensures that:
+              * - All tRPC requests are properly routed to the correct handler
+              * - The path matches our basePath('/api') configuration
+              * - Client-side tRPC calls will connect to the correct endpoint URL
+              */
+             endpoint: '/api/trpc',
+             router: appRouter,
+             createContext: (_opts, c) => {
+               return createTRPCContext(c)
+             }
+           })
+         )
+
+         app.get('/status', c => {
+           return c.json({
+             message: 'Hono Router: Hono + tRPC'
+           })
+         })
+
+         export default app
+         ```
+         - GIT COMMIT: `git commit -m "feat(api): add createContext to trpcServer middleware"`
   - PULL REQUEST TITLE: `feat(auth, api): integrate better-auth with Hono & tRPC`   
