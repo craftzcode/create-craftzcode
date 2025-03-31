@@ -1527,11 +1527,17 @@ Your choice between them should depend on your project's specific needs regardin
        }),
        emailAndPassword: {
          enabled: true
-      },
+       },
        socialProviders: {
         github: {
           clientId: process.env.GITHUB_CLIENT_ID as string,
           clientSecret: process.env.GITHUB_CLIENT_SECRET as string
+        }
+       },
+      session: {
+        cookieCache: {
+          enabled: true,
+          maxAge: 5 * 60 // Cache duration in seconds
         }
       }
      })
