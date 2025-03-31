@@ -620,6 +620,7 @@ Your choice between them should depend on your project's specific needs regardin
           }
         }
         ```
+      - GIT COMMIT: `git commit -m "chore(turbo): add ui-add script both root turbo.json and packages.json"`
       - Add all shadcn components.
         - CLI: `bun run ui-add`
         - Select all.
@@ -780,8 +781,7 @@ Your choice between them should depend on your project's specific needs regardin
    - Setup `db` package
      - Create a folder called `db` inside the `packages` folder.
      - Go to the location of your `db` folder in shell then init the `package.json`
-       - CLI: `bun init`
-       - Replace the contents of `packages/db/package.json` with the following code.
+       - Add `package.json` in `packages/db` with the following code.
           ```json
           {
             "name": "@craftzcode/db",
@@ -820,7 +820,7 @@ Your choice between them should depend on your project's specific needs regardin
        - Add this two db scripts in the `package.json` of the root your turbrepo.
          ```json
          "scripts": {
-           "db:craftzcode": "turbo -F @craftzcode/db push",
+           "db:push": "turbo -F @craftzcode/db push",
            "db:studio": "turbo -F @craftzcode/db studio"
          }
          ```
@@ -837,7 +837,7 @@ Your choice between them should depend on your project's specific needs regardin
             }
           }
           ```
-         - GIT COMMIT: `git commit -m "chore(turbo): add db push and studio scripts"`
+         - GIT COMMIT: `git commit -m "chore(turbo): add db push and studio scripts both root turbo.json and packages.json"`
      - Add `eslint.config.js` in `packages/db` with the following code
        ```js
        import baseConfig from "@craftzcode/eslint-config/base";
@@ -862,7 +862,7 @@ Your choice between them should depend on your project's specific needs regardin
 
    - Setup Neon Database
      - Create a database in [Neon Tech](https://console.neon.tech/).
-     - Create `.env` on the root of package `packages/db/.env.local`.
+     - Create `.env.local` on the root of package `packages/db/.env.local`.
      - Copy the connection string and paste it to `.env.local`
        ```
        DATABASE_URL="connection-string"
@@ -1356,6 +1356,8 @@ Your choice between them should depend on your project's specific needs regardin
      */
      const app = new Hono().basePath('/api')
 
+     app.use(logger())
+
      app.use(
        '/trpc/*',
        trpcServer({
@@ -1425,3 +1427,171 @@ Your choice between them should depend on your project's specific needs regardin
      - GIT COMMIT: `git commit -m "feat(web): update API route for Hono and tRPC integration"`
        
    - PULL REQUEST TITLE: `feat(backend): integrate Hono with tRPC`
+     
+12. Setup AUTH package for Better-Auth.
+   - GIT BRANCH: `git checkout -b backend/feat/8-auth`
+
+   - Option 1: Follow the [Better-Auth Installation](https://www.better-auth.com/docs/installation)
+     
+   - Option 2: Follow this guide. 
+   - Create a folder called `auth` inside the `packages` folder.
+   - Inside `packages/auth`, create a `package.json` file with the following content.
+     ```json
+     {
+      "name": "@rhu-ii/auth",
+      "version": "0.0.0",
+      "type": "module",
+      "scripts": {
+        "build": "tsc",
+        "dev": "tsc --watch --preserveWatchOutput",
+        "lint": "eslint . --max-warnings 0",
+        "check-types": "tsc --noEmit",
+        "clean": "git clean -xdf .cache .turbo dist node_modules"
+      },
+      "exports": {
+        ".": {
+          "types": "./dist/index.d.ts",
+          "default": "./dist/index.js"
+        },
+        "./client": {
+          "types": "./dist/auth-client.d.tsx",
+          "default": "./dist/auth-client.js"
+        }
+      },
+      "dependencies": {
+        "@rhu-ii/db": "workspace:*"
+      },
+      "devDependencies": {
+        "@rhu-ii/eslint-config": "*",
+        "@rhu-ii/prettier-config": "*",
+        "@rhu-ii/typescript-config": "*",
+        "eslint": "^9.22.0",
+        "typescript": "5.8.2"
+      },
+      "prettier": "@rhu-ii/prettier-config"
+     }
+     ```
+     - GIT COMMIT: `git commit -m "chore(auth): add package.json for db package"`
+   - Add `eslint.config.js` in `packages/auth` with the following code.
+     ```js
+     import baseConfig from "@rhu-ii/eslint-config/base";
+
+     /** @type {import('typescript-eslint').Config} */
+     export default [
+       {
+        ignores: ["dist/**"],
+      },
+      ...baseConfig,
+     ];
+     ```
+   - Add `tsconfig.json` in `packages/auth` with the following code.
+     ```json
+     {
+      "extends": "@rhu-ii/typescript-config/internal-library.json",
+      "compilerOptions": {
+        "jsx": "react-jsx"
+      },
+      "include": ["src"],
+      "exclude": ["node_modules", "dist"]
+     }
+     ```
+   - GIT COMMIT: `git commit -m "chore(auth): configure TS and ESLint"`
+   - Go to the `packages/auth` folder in your shell then install `Better-Auth` package.
+     ```shell
+     bun add better-auth
+     ```
+     - GIT COMMIT `git commit -m "chore(auth): install better-auth package"`
+   - Create a `.env.local` file in the `packages/auth` and add the following environment variables.
+     ```env
+     BETTER_AUTH_SECRET=
+     BETTER_AUTH_URL=http://localhost:3000 #Base URL of your app
+
+     DATABASE_URL=
+     ```
+   - Create a `src` folder in `packages/auth` and create a `auth.ts/index.ts` file in the `packages/auth/src` directory and create your auth instance.
+     ```ts
+     import { db } from '@rhu-ii/db' // your drizzle instance
+     import { account, session, user, verification } from '@rhu-ii/db/schema'
+     import { betterAuth } from 'better-auth'
+     import { drizzleAdapter } from 'better-auth/adapters/drizzle'
+
+     export const auth = betterAuth({
+       database: drizzleAdapter(db, {
+        provider: 'pg', // or "mysql", "sqlite"
+         schema: {
+           user,
+           session,
+           account,
+           verification
+         }
+       }),
+       emailAndPassword: {
+         enabled: true
+      },
+       socialProviders: {
+        github: {
+          clientId: process.env.GITHUB_CLIENT_ID as string,
+          clientSecret: process.env.GITHUB_CLIENT_SECRET as string
+        }
+      }
+     })
+     ```
+     - GIT COMMIT: `git commit -m ""`
+   - To handle api requests, you need to set up a route handler on your server there's a many option here [Better-Auth Mound Handler](https://www.better-auth.com/docs/installation#mount-handler) but in this guide we will integrate it using `Hono.js` mount handler.
+     - First we need to add this `@craftzcode/auth` dependency in `packages/api/package.json`
+       ```json
+       "@craftzcode/auth": "*"
+       ```
+     - Second we need to update the `tRPC` with `Hono.js` adapter in `packages/api/src/index.ts` then set up a the `better-auth` route handler.
+       ```ts
+       import { trpcServer } from '@hono/trpc-server' // Deno 'npm:@hono/trpc-server'
+
+       import { auth } from '@rhu-ii/auth'
+       import { Hono } from 'hono'
+       import { logger } from 'hono/logger'
+
+       import { appRouter } from './server/routers'
+
+       /**
+        * We use basePath('/api') to prefix all routes with '/api'.
+        * This ensures our API endpoints are properly namespaced under /api/
+        * (e.g., localhost:3000/api/status instead of localhost:3000/status).
+        *
+        * Benefits:
+        * - Clear separation between API routes and other routes (like frontend pages)
+        * - Better organization and maintainability
+        * - Follows REST API best practices for route structuring
+        */
+       const app = new Hono().basePath('/api')
+
+       app.use(logger())
+
+       // Better-Auth Route Handler
+       app.on(['POST', 'GET'], '/api/auth/**', c => auth.handler(c.req.raw))
+
+       app.use(
+        '/trpc/*',
+        trpcServer({
+          /**
+           * The endpoint parameter defines the full URL path for tRPC API requests.
+           * We set it to '/api/trpc' to match our basePath prefix + the trpc route.
+           *
+           * This ensures that:
+           * - All tRPC requests are properly routed to the correct handler
+           * - The path matches our basePath('/api') configuration
+           * - Client-side tRPC calls will connect to the correct endpoint URL
+           */
+          endpoint: '/api/trpc',
+           router: appRouter
+        })
+       )
+
+       app.get('/status', c => {
+         return c.json({
+           message: 'Hono Router: Hono + tRPC'
+         })
+       })
+
+       export default app
+       ```
+       - GIT COMMIT: `git commit -m ""`
