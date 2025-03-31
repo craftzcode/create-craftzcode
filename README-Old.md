@@ -1376,7 +1376,6 @@ Your choice between them should depend on your project's specific needs regardin
        trpcServer({
          endpoint: '/api/trpc',
          router: appRouter,
-         createContext: createTRPCContext
        })
      )
 
