@@ -1092,8 +1092,6 @@ Your choice between them should depend on your project's specific needs regardin
 
          import { initTRPC } from '@trpc/server'
 
-         import { AppRouter, appRouter } from './server/routers'
-
          export const createTRPCContext = cache(async () => {
            /**
             * @see: https://trpc.io/docs/server/context
@@ -1115,8 +1113,6 @@ Your choice between them should depend on your project's specific needs regardin
          export const createCallerFactory = t.createCallerFactory
          export const publicProcedure = t.procedure
          // TODO: Add Protected Procedure
-         export { appRouter }
-         export type { AppRouter }
          ```
        - Create `routers` folder in `packages/api/src` and create a `_app.ts/index.ts` file in the `packages/api/src/server/routers` add this root tRPC route.
          ```ts
@@ -1306,55 +1302,29 @@ Your choice between them should depend on your project's specific needs regardin
          - Mount the `TRPCReactProvider` from `packages/api/src/client/index.ts` in the root of your application `(e.g. app/layout.tsx when using Next.js)`.
          - Create the `app/api/trpc/[tprc]/route.ts` with the following code.
            ```ts
-           import { trpcServer } from '@hono/trpc-server' // Deno 'npm:@hono/trpc-server'
-           import { Hono } from 'hono'
+           import { createTRPCContext } from '@rhu-ii/api'
+           import { appRouter } from '@rhu-ii/api/server/routers'
 
-           import { appRouter } from './server/routers'
-           import { createTRPCContext } from './trpc'
+           import { fetchRequestHandler } from '@trpc/server/adapters/fetch'
 
-           /**
-           * We use basePath('/api') to prefix all routes with '/api'.
-           * This ensures our API endpoints are properly namespaced under /api/
-           * (e.g., localhost:3000/api/status instead of localhost:3000/status).
-           *
-           * Benefits:
-           * - Clear separation between API routes and other routes (like frontend pages)
-           * - Better organization and maintainability
-           * - Follows REST API best practices for route structuring
-           */
-           const app = new Hono().basePath('/api')
-
-           app.use(
-            '/trpc/*',
-            trpcServer({
-              /**
-               * The endpoint parameter defines the full URL path for tRPC API requests.
-               * We set it to '/api/trpc' to match our basePath prefix + the trpc route.
-               *
-               * This ensures that:
-               * - All tRPC requests are properly routed to the correct handler
-               * - The path matches our basePath('/api') configuration
-               * - Client-side tRPC calls will connect to the correct endpoint URL
-               */
+           const handler = (req: Request) =>
+            fetchRequestHandler({
               endpoint: '/api/trpc',
+              req,
               router: appRouter,
               createContext: createTRPCContext
             })
-           )
-
-           app.get('/status', c => {
-            return c.json({
-              message: 'Hono Router: Hono + tRPC'
-            })
-           })
-
-           export default app
+           
+           export { handler as GET, handler as POST }
            ```
            
   - Pull Request Title: `feat(backend): add tRPC for end-to-end type safety`
     
 11. Integrate Hono.js in tRPC
+   - NOTE: `Next.js` and `Hono.js` adapter has different api route configuration when it comes to `tRPC` on the previous guide we setup the `tRPC` using `Next.js` adapter which is the `apps/web/app/api/trpc/[trpc]/route.ts`, for now there's no documentation on [Hosting tRPC with Adapters](https://trpc.io/docs/server/adapters). But I con show you how to setup `tRPC` using `Hono.js` as a adapter which is the `apps/web/app/api/[[...route]]/route.ts` this is the default api route from [Hono.js Vercel](https://hono.dev/docs/getting-started/vercel#_2-hello-world) this kind of api route can sured that we can access both api routes `tRPC` (api/trpc/[trpc]/) and `Hono.js` (api/) also later when we setup the `better-auth` for authentication we can access the `better-auth` api routes which is the (api/auth/) if we are not using the `Hono.js` as a adapter we will use the `Next.js` adapter which is the `apps/web/app/api/trpc/[trpc]/route.ts` this kind of api routes we cannot access the `better-auth` api routes because the `Next.js` adapter only catch the `api/trpc/[trpc]/` we can't access the `api/auth` we need to new one api route in `Next.js` for the `better-auth` api routes.
    - GIT BRANCH: `git checkout -b backend/feat/7-hono-trpc`
+   - Option 1: Follow the [Hono 3rd Party Library for tRPC Server Documentation](https://github.com/honojs/middleware/tree/main/packages/trpc-server#trpc-server-middleware-for-hono).
+   - Option 2: Follow this guide.
    - Go to the `packages/api` folder in shell then install `hono` packages.
      ```shell
      bun add hono @hono/trpc-server
@@ -1368,16 +1338,34 @@ Your choice between them should depend on your project's specific needs regardin
      import { Hono } from 'hono'
 
      import { appRouter } from './server/routers'
-     import { createTRPCContext } from './trpc'
 
+     /**
+      * We use basePath('/api') to prefix all routes with '/api'.
+      * This ensures our API endpoints are properly namespaced under /api/
+      * (e.g., localhost:3000/api/status instead of localhost:3000/status).
+      *
+      * Benefits:
+      * - Clear separation between API routes and other routes (like frontend pages)
+     * - Better organization and maintainability
+      * - Follows REST API best practices for route structuring
+     */
      const app = new Hono().basePath('/api')
 
      app.use(
        '/trpc/*',
        trpcServer({
+         /**
+          * The endpoint parameter defines the full URL path for tRPC API requests.
+          * We set it to '/api/trpc' to match our basePath prefix + the trpc route.
+          *
+          * This ensures that:
+          * - All tRPC requests are properly routed to the correct handler
+          * - The path matches our basePath('/api') configuration
+          * - Client-side tRPC calls will connect to the correct endpoint URL
+          */
          endpoint: '/api/trpc',
-         router: appRouter,
-       })
+         router: appRouter
+      })
      )
 
      app.get('/status', c => {
@@ -1388,6 +1376,7 @@ Your choice between them should depend on your project's specific needs regardin
 
      export default app
      ```
+     
      - GIT COMMIT: `git commit -m "feat(api): initialize Hono with tRPC server middleware"`
    - Update `createTRPCContext` import from `'../index'` to `'../trpc'` in `packages/api/src/server/index.tsx` for consistency.
      - GIT COMMIT: `git commit -m "refactor(api): update createTRPCContext import in packages/api/src/server/index.tsx"`
