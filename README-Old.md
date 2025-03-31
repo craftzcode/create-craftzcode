@@ -1272,6 +1272,7 @@ Your choice between them should depend on your project's specific needs regardin
             </HydrationBoundary>
           );
          }
+         
          export function prefetch<T extends ReturnType<TRPCQueryOptions<any>>>(
            queryOptions: T,
          ) {
