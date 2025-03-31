@@ -1435,7 +1435,7 @@ Your choice between them should depend on your project's specific needs regardin
      
    - Option 2: Follow this guide. 
    - Create a folder called `auth` inside the `packages` folder.
-   - Inside `packages/auth`, create a `package.json` file with the following content.
+   - Inside `packages/auth`, create a `package.json` file with the following content also we add `db` package to `dependencies` because we need to connect our `db` to our `auth`.
      ```json
      {
       "name": "@rhu-ii/auth",
@@ -1471,7 +1471,7 @@ Your choice between them should depend on your project's specific needs regardin
       "prettier": "@rhu-ii/prettier-config"
      }
      ```
-     - GIT COMMIT: `git commit -m "chore(auth): add package.json for db package"`
+     - GIT COMMIT: `git commit -m "chore(auth): add package.json for auth package with db package"`
    - Add `eslint.config.js` in `packages/auth` with the following code.
      ```js
      import baseConfig from "@rhu-ii/eslint-config/base";
@@ -1536,7 +1536,19 @@ Your choice between them should depend on your project's specific needs regardin
       }
      })
      ```
-     - GIT COMMIT: `git commit -m ""`
+     - GIT COMMIT: `git commit -m "feat(auth): add auth server instance"`
+   - Create a `client` folder in `packages/auth/src` and create a `auth-client.ts/index.ts` file in the `packages/auth/src/client` directory and create your auth client instance.
+     ```ts
+     import { createAuthClient } from 'better-auth/react'
+
+     export const authClient: ReturnType<typeof createAuthClient> = createAuthClient({
+      /** the base url of the server (optional if you're using the same domain) */
+      baseURL: process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'http://localhost:3000'
+     })
+
+     export const { signIn, signUp, useSession } = authClient
+     ```
+     - GIT COMMIT: `git commit -m "feat(auth): add auth client instance"`
    - To handle api requests, you need to set up a route handler on your server there's a many option here [Better-Auth Mound Handler](https://www.better-auth.com/docs/installation#mount-handler) but in this guide we will integrate it using `Hono.js` mount handler.
      - First we need to add this `@craftzcode/auth` dependency in `packages/api/package.json`
        ```json
@@ -1594,4 +1606,5 @@ Your choice between them should depend on your project's specific needs regardin
 
        export default app
        ```
-       - GIT COMMIT: `git commit -m ""`
+       - GIT COMMIT: `git commit -m "feat(api): integrate better-auth handler with Hono and tRPC"`
+     
