@@ -1325,8 +1325,10 @@ Your choice between them should depend on your project's specific needs regardin
            
   - Pull Request Title: `feat(backend): add tRPC for end-to-end type safety`
     
-11. Integrate Hono.js in tRPC
+11. Integrate Hono.js in tRPC (Optional)
+   - NOTE: This is not finish yet.
    - NOTE: `Next.js` and `Hono.js` adapter has different api route configuration when it comes to `tRPC` on the previous guide we setup the `tRPC` using `Next.js` adapter which is the `apps/web/app/api/trpc/[trpc]/route.ts`, for now there's no documentation on [Hosting tRPC with Adapters](https://trpc.io/docs/server/adapters). But I con show you how to setup `tRPC` using `Hono.js` as a adapter which is the `apps/web/app/api/[[...route]]/route.ts` this is the default api route from [Hono.js Vercel](https://hono.dev/docs/getting-started/vercel#_2-hello-world) this kind of api route can sured that we can access both api routes `tRPC` (api/trpc/[trpc]/) and `Hono.js` (api/) also later when we setup the `better-auth` for authentication we can access the `better-auth` api routes which is the (api/auth/) if we are not using the `Hono.js` as a adapter we will use the `Next.js` adapter which is the `apps/web/app/api/trpc/[trpc]/route.ts` this kind of api routes we cannot access the `better-auth` api routes because the `Next.js` adapter only catch the `api/trpc/[trpc]/` we can't access the `api/auth` we need to new one api route in `Next.js` for the `better-auth` api routes.
+   - NOTE: If we are using `Hono.js` as a adapter/server of `tRPC` I think we don't need the [tRPC caller for Server Components](https://trpc.io/docs/client/tanstack-react-query/server-components#5-create-a-trpc-caller-for-server-components) we don't need to use the server component of `Next.js`, because what would be the point of the `Hono.js` server if I also use `Next.js` server component.
    - GIT BRANCH: `git checkout -b backend/feat/7-hono-trpc`
    - Option 1: Follow the [Hono 3rd Party Library for tRPC Server Documentation](https://github.com/honojs/middleware/tree/main/packages/trpc-server#trpc-server-middleware-for-hono).
    - Option 2: Follow this guide.
@@ -1614,7 +1616,7 @@ Your choice between them should depend on your project's specific needs regardin
        ```
        - GIT COMMIT: `git commit -m "feat(api): integrate better-auth handler with Hono and tRPC"`
      - Setup Protected Procedure Middelware
-       - Create a `lib` folder in `packages/api/src` and create a `context.ts` file in `packages/api/src/lib` to integrate Hono.js context with tRPC context.
+       - Create a `lib` folder in `packages/api/src` and create a `context.ts` file in `packages/api/src/lib` to integrate `Hono.js` context with `tRPC` context.
          ```ts
          import { cache } from 'react'
 
