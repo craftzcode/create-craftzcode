@@ -1025,8 +1025,8 @@ Your choice between them should depend on your project's specific needs regardin
              "default": "./dist/server/index.js"
            },
            "./server/routers": {
-             "types": "./dist/server/index.d.ts",
-             "default": "./dist/server/index.js"
+             "types": "./dist/server/routers/index.d.ts",
+             "default": "./dist/server/routers/index.js"
            }
          },
          "scripts": {
