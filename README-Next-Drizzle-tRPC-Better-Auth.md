@@ -1303,8 +1303,8 @@ Your choice between them should depend on your project's specific needs regardin
          - Mount the `TRPCReactProvider` from `packages/api/src/client/index.ts` in the root of your application `(e.g. app/layout.tsx when using Next.js)`.
          - Create `trpc` api route for the `Next.js` `tRPC` adapter `app/api/trpc/[tprc]/route.ts` with the following code.
            ```ts
-           import { createTRPCContext } from '@rhu-ii/api'
-           import { appRouter } from '@rhu-ii/api/server/routers'
+           import { createTRPCContext } from '@craftzcode/api'
+           import { appRouter } from '@craftzcode/api/server/routers'
 
            import { fetchRequestHandler } from '@trpc/server/adapters/fetch'
 
@@ -1331,7 +1331,7 @@ Your choice between them should depend on your project's specific needs regardin
    - Inside `packages/auth`, create a `package.json` file with the following content also we add `db` package to `dependencies` because we need to connect our `db` to our `auth`.
      ```json
      {
-      "name": "@rhu-ii/auth",
+      "name": "@craftzcode/auth",
       "version": "0.0.0",
       "type": "module",
       "scripts": {
@@ -1352,22 +1352,22 @@ Your choice between them should depend on your project's specific needs regardin
         }
       },
       "dependencies": {
-        "@rhu-ii/db": "workspace:*"
+        "@craftzcode/db": "workspace:*"
       },
       "devDependencies": {
-        "@rhu-ii/eslint": "*",
-        "@rhu-ii/prettier": "*",
-        "@rhu-ii/typescript": "*",
+        "@craftzcode/eslint": "*",
+        "@craftzcode/prettier": "*",
+        "@craftzcode/typescript": "*",
         "eslint": "^9.22.0",
         "typescript": "5.8.2"
       },
-      "prettier": "@rhu-ii/prettier"
+      "prettier": "@craftzcode/prettier"
      }
      ```
      - GIT COMMIT: `git commit -m "chore(auth): add package.json for auth package with db package"`
    - Add `eslint.config.js` in `packages/auth` with the following code.
      ```js
-     import baseConfig from "@rhu-ii/eslint/base";
+     import baseConfig from "@craftzcode/eslint/base";
 
      /** @type {import('typescript-eslint').Config} */
      export default [
@@ -1380,7 +1380,7 @@ Your choice between them should depend on your project's specific needs regardin
    - Add `tsconfig.json` in `packages/auth` with the following code.
      ```json
      {
-      "extends": "@rhu-ii/typescript/internal-library.json",
+      "extends": "@craftzcode/typescript/internal-library.json",
       "compilerOptions": {
         "jsx": "react-jsx"
       },
@@ -1403,8 +1403,8 @@ Your choice between them should depend on your project's specific needs regardin
      ```
    - Create a `src` folder in `packages/auth` and create a `auth.ts/index.ts` file in the `packages/auth/src` directory and create your auth instance.
      ```ts
-     import { db } from '@rhu-ii/db' // your drizzle instance
-     import { account, session, user, verification } from '@rhu-ii/db/schema'
+     import { db } from '@craftzcode/db' // your drizzle instance
+     import { account, session, user, verification } from '@craftzcode/db/schema'
      import { betterAuth } from 'better-auth'
      import { drizzleAdapter } from 'better-auth/adapters/drizzle'
 
@@ -1466,7 +1466,7 @@ Your choice between them should depend on your project's specific needs regardin
          ```ts
          import { cache } from 'react'
 
-         import { auth } from '@rhu-ii/auth'
+         import { auth } from '@craftzcode/auth'
 
          export const createTRPCContext = cache(async () => {
           const session = await auth.api.getSession({
