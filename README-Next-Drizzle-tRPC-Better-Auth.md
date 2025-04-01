@@ -310,6 +310,7 @@ Your choice between them should depend on your project's specific needs regardin
           }
         }
         ```
+      - Add the `"dist/**"` in `build` task in the `turbo.json` of the root of project.
       - Add the `config` folder to `workspaces` in the `package.json` of the root of your project.
         ```json
         "workspaces": [
