@@ -1111,7 +1111,7 @@ Your choice between them should depend on your project's specific needs regardin
          export const publicProcedure = t.procedure
          // TODO: Add Protected Procedure
          ```
-       - Create `routers` folder in `packages/api/src/server` and create a `_app.ts/index.ts` file in the `packages/api/src/server/routers` add this root tRPC route.
+       - Create a `_app.ts/index.ts` file in the `packages/api/src/server/routers` add this root tRPC route.
          ```ts
          import { z } from 'zod'
 
@@ -1134,7 +1134,7 @@ Your choice between them should depend on your project's specific needs regardin
          // export type definition of API
          export type AppRouter = typeof appRouter
          ```
-       - Create `client` folder in `packages/api/src` and create a shared file `packages/api/src/client/query-client.ts` that exports a function that creates a `QueryClient` instance.
+       - Create a `query-client.ts` in `packages/api/src/client` that exports a function that creates a `QueryClient` instance.
          ```ts
          import superjson from 'superjson'
 
