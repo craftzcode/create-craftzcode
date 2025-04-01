@@ -1111,7 +1111,7 @@ Your choice between them should depend on your project's specific needs regardin
          export const publicProcedure = t.procedure
          // TODO: Add Protected Procedure
          ```
-       - Create `routers` folder in `packages/api/src` and create a `_app.ts/index.ts` file in the `packages/api/src/server/routers` add this root tRPC route.
+       - Create `routers` folder in `packages/api/src/server` and create a `_app.ts/index.ts` file in the `packages/api/src/server/routers` add this root tRPC route.
          ```ts
          import { z } from 'zod'
 
