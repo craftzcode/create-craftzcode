@@ -229,7 +229,7 @@ Your choice between them should depend on your project's specific needs regardin
        
    - Option 2: Go to the  `Preferences > VS Code Settings` search for the `Git Branch Protection` and add the `main` in the list.
 
-3.  Remove bolierplates and add script for `clean` and running dev with filtering both `docs` and `web`
+3.  Remove bolierplates, add script for `clean`, running dev with filtering both `docs` and `web`, and setup `syncpack` to manage version of dependencies.
     - Remove boilerplates
       - Delete `page.module.css` and all of code inside of `page.tsx` both on `docs and web`.
       - GIT COMMIT: `git commit -m "refactor(docs, web): delete boilerplates"`
@@ -270,13 +270,21 @@ Your choice between them should depend on your project's specific needs regardin
           },
         }
         ```
-      - GIT COMMIT: `git commit -m "chore(package): add clean script to all workspaces"`
+        - GIT COMMIT: `git commit -m "chore(package): add clean script to all workspaces"`
       - Add the script for running dev with filtering `docs` or `web` in the root `package.json` of your turborepo.
         ```json
         "dev:docs": "turbo run dev -F docs",
         "dev:web": "turbo run dev -F web",
         ```
       - GIT COMMIT: `git commit -m "chore(package): add workspace-specific dev scripts"`
+      - Setup Syncpack
+        - Install syncpack in devDependencies in the root `package.json` of your turborepo to manage dependency version mismatches across the turborepo.
+        - Add this two scripts of sycnpack in the root `package.json` of your turborepo, `list-mismatches` to check all dependencies version that mismatches, `fix-mismatches` to fix all version of dependencies that mismatches.
+          ```json
+          "list-mismatches": "bunx syncpack list-mismatches",
+          "fix-mismatches": "bunx syncpack fix-mismatches --",
+          ```
+        - GIT COMMIT: `git commit -m "chore(package): add syncpack and version management scripts"`
 
 4.  Create a Github Repository
     - Add the github repository to the project and push the main branch.
@@ -295,7 +303,7 @@ Your choice between them should depend on your project's specific needs regardin
     - Configure TypeScript & ESLint
       - Create a new folder named `config` in the root of your project.
       - Move the `typescript-config` and `eslint-config` into the `config` folder.
-      - Rename all instance both `typescript-config` and `eslint-config` into `typescript` and `eslint` and make sure you don't include the `eslint-config-prettier` in renaming all of `eslint-config`.
+      - Rename folder, imports, extends, and dependency both `typescript-config` and `eslint-config` into `typescript` and `eslint` and make sure you don't include the `eslint-config-prettier` in renaming all of `eslint-config`.
       - Create a `internal-library.json` in `config/typescript` directory to centralize custom TypeScript settings for internal libraries.
         ```json
         {
@@ -310,6 +318,7 @@ Your choice between them should depend on your project's specific needs regardin
           }
         }
         ```
+      - Add the `"dist/**"` in `build` task in the `turbo.json` of the root of project.
       - Add the `config` folder to `workspaces` in the `package.json` of the root of your project.
         ```json
         "workspaces": [
@@ -318,11 +327,10 @@ Your choice between them should depend on your project's specific needs regardin
           "config/*"
         ]
         ```
-      - Reinstall packages.
+      - After renaming folder, imports, extends, and dependency reinstall the `typescript` and `eslint` dependencies.
         - CLI: `bun install`
-    
       - GIT COMMIT: `git commit -m "chore(config): move typescript and eslint configs to config folder"`
-
+        
     - PULL REQUEST TITLE: `chore(infrastructure): add cursor rules, update aliases, and reorganize configs`
 
 6.  Setup Prettier, Tailwind CSS, and Shadcn UI Shared Configs
@@ -1025,8 +1033,8 @@ Your choice between them should depend on your project's specific needs regardin
              "default": "./dist/server/index.js"
            },
            "./server/routers": {
-             "types": "./dist/server/index.d.ts",
-             "default": "./dist/server/index.js"
+             "types": "./dist/server/routers/index.d.ts",
+             "default": "./dist/server/routers/index.js"
            }
          },
          "scripts": {
@@ -1111,7 +1119,8 @@ Your choice between them should depend on your project's specific needs regardin
          export const publicProcedure = t.procedure
          // TODO: Add Protected Procedure
          ```
-       - Create `routers` folder in `packages/api/src` and create a `_app.ts/index.ts` file in the `packages/api/src/server/routers` add this root tRPC route.
+         - GIT COMMIT: `git commit -m "feat(api): add tRPC initialization"`
+       - Create a `_app.ts/index.ts` file in the `packages/api/src/server/routers` add this root tRPC route.
          ```ts
          import { z } from 'zod'
 
@@ -1134,7 +1143,8 @@ Your choice between them should depend on your project's specific needs regardin
          // export type definition of API
          export type AppRouter = typeof appRouter
          ```
-       - Create `client` folder in `packages/api/src` and create a shared file `packages/api/src/client/query-client.ts` that exports a function that creates a `QueryClient` instance.
+         - GIT COMMIT: `git commit -m "feat(api): add root tRPC router"`
+       - Create a `query-client.ts` in `packages/api/src/client` that exports a function that creates a `QueryClient` instance.
          ```ts
          import superjson from 'superjson'
 
@@ -1158,6 +1168,7 @@ Your choice between them should depend on your project's specific needs regardin
            })
          }
          ```
+         - GIT COMMIT: `git commit -m "feat(api): add query-client helper"`
        - Setup a tRPC client for Client Components create a `client.tsx/index.tsx` file in the `packages/api/src/client` with the following code.
          ```tsx
          'use client'
@@ -1229,6 +1240,7 @@ Your choice between them should depend on your project's specific needs regardin
             )
          }
          ```
+         - GIT COMMIT: `git commit -m "feat(api): setup tRPC client for client components"`
        - Setup a tRPC caller for Server Components create a `server.tsx/index.tsx` file in the `packages/api/src/server` with the following code.
          ```tsx
          import 'server-only' // <-- ensure this file cannot be imported from the client
@@ -1298,13 +1310,14 @@ Your choice between them should depend on your project's specific needs regardin
          //   );
          // }
          ```
+         - GIT COMMIT: `git commit -m "feat(api): setup tRPC caller for server components"`
        - Initialize the connection of `tRPC` (packages/api) and `Next.js` (apps/web).
          - Add the `@craftzcode/api` package in `dependencies` of the `web/packages.json`.
          - Mount the `TRPCReactProvider` from `packages/api/src/client/index.ts` in the root of your application `(e.g. app/layout.tsx when using Next.js)`.
          - Create `trpc` api route for the `Next.js` `tRPC` adapter `app/api/trpc/[tprc]/route.ts` with the following code.
            ```ts
-           import { createTRPCContext } from '@rhu-ii/api'
-           import { appRouter } from '@rhu-ii/api/server/routers'
+           import { createTRPCContext } from '@craftzcode/api'
+           import { appRouter } from '@craftzcode/api/server/routers'
 
            import { fetchRequestHandler } from '@trpc/server/adapters/fetch'
 
@@ -1318,7 +1331,7 @@ Your choice between them should depend on your project's specific needs regardin
            
            export { handler as GET, handler as POST }
            ```
-           
+           - GIT COMMIT: `git commit -m "feat(api): integrate tRPC with Next.js route and update dependencies"`
   - Pull Request Title: `feat(backend): add tRPC for end-to-end type safety`
     
 11. Integrate Hono.js in tRPC (Optional)
