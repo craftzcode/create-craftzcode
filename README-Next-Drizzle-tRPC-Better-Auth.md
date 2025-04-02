@@ -193,7 +193,7 @@ Your choice between them should depend on your project's specific needs regardin
       - Add this two scripts of `sycnpack` in the root `package.json` of your turborepo, `list-mismatches` to check all dependencies version that mismatches, `fix-mismatches` to fix all version of dependencies that mismatches.
         ```json
         "list-mismatches": "bunx syncpack list-mismatches",
-        "fix-mismatches": "bunx syncpack fix-mismatches --",
+        "fix-mismatches": "bunx syncpack fix-mismatches --filter",
         ```
         - GIT COMMIT: `git commit -m "chore(package): add syncpack and version management scripts"`
   
