@@ -569,7 +569,7 @@ Your choice between them should depend on your project's specific needs regardin
           "compilerOptions": {
             "jsx": "preserve",
             "paths": {
-              "@/*": ["./src/*"]
+              "@craftzcode/ui/*": ["./src/*"]
             }
           },
           "include": ["src"],
@@ -600,11 +600,11 @@ Your choice between them should depend on your project's specific needs regardin
             "prefix": ""
           },
           "aliases": {
-            "components": "@/components",
-            "utils": "@/lib/utils",
-            "ui": "src/components",
-            "lib": "@/lib",
-            "hooks": "@/hooks"
+            "components": "@craftzcode/ui/components",
+            "utils": "@craftzcode/ui/lib/utils",
+            "ui": "@craftzcode/ui/components",
+            "lib": "@craftzcode/ui/lib",
+            "hooks": "@craftzcode/ui/hooks"
           },
           "iconLibrary": "lucide"
         }
