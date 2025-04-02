@@ -188,8 +188,8 @@ Your choice between them should depend on your project's specific needs regardin
     - Package Manager: `Bun`
     - Update Dependencies in all Workspace: `bun update`
     - Setup Syncpack
-      - Install syncpack in devDependencies in the root `package.json` of your turborepo to manage dependency version mismatches across the turborepo.
-      - Add this two scripts of sycnpack in the root `package.json` of your turborepo, `list-mismatches` to check all dependencies version that mismatches, `fix-mismatches` to fix all version of dependencies that mismatches.
+      - Install `syncpack` in devDependencies in the root `package.json` of your turborepo to manage dependency version mismatches across the turborepo.
+      - Add this two scripts of `sycnpack` in the root `package.json` of your turborepo, `list-mismatches` to check all dependencies version that mismatches, `fix-mismatches` to fix all version of dependencies that mismatches.
         ```json
         "list-mismatches": "bunx syncpack list-mismatches",
         "fix-mismatches": "bunx syncpack fix-mismatches --",
