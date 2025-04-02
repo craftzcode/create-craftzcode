@@ -376,9 +376,6 @@ Your choice between them should depend on your project's specific needs regardin
             "lint": "next lint --max-warnings 0",
             "clean": "git clean -xdf .cache .turbo node_modules"
           },
-          "devDependencies": {
-            "@craftzcode/eslint": "*"
-          },
           "prettier": "@craftzcode/prettier"
         }
         ```
