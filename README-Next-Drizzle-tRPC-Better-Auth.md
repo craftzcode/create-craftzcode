@@ -622,7 +622,6 @@ Your choice between them should depend on your project's specific needs regardin
             "cache": false,
             "interactive": true
             },
-          }
         }
         ```
       - GIT COMMIT: `git commit -m "chore(turbo): add ui-add script both root turbo.json and packages.json"`
