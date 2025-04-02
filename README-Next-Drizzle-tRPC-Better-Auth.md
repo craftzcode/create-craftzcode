@@ -483,7 +483,7 @@ Your choice between them should depend on your project's specific needs regardin
         ```json
         {
           "name": "@craftzcode/tailwind",
-          "version": "0.1.0",
+          "version": "0.0.0",
           "private": true,
           "type": "module",
           "exports": {
@@ -495,9 +495,7 @@ Your choice between them should depend on your project's specific needs regardin
             "clean": "git clean -xdf .cache .turbo node_modules"
           },
           "devDependencies": {
-            "@craftzcode/eslint": "*",
             "@craftzcode/prettier": "*",
-            "eslint": "^9.22.0"
           },
           "prettier": "@craftzcode/prettier"
         }
