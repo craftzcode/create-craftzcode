@@ -187,6 +187,14 @@ Your choice between them should depend on your project's specific needs regardin
     - CLI: `pnpm dlx create-turbo@latest craftzcode-stack`
     - Package Manager: `Bun`
     - Update Dependencies in all Workspace: `bun update`
+    - Setup Syncpack
+      - Install syncpack in devDependencies in the root `package.json` of your turborepo to manage dependency version mismatches across the turborepo.
+      - Add this two scripts of sycnpack in the root `package.json` of your turborepo, `list-mismatches` to check all dependencies version that mismatches, `fix-mismatches` to fix all version of dependencies that mismatches.
+        ```json
+        "list-mismatches": "bunx syncpack list-mismatches",
+        "fix-mismatches": "bunx syncpack fix-mismatches --",
+        ```
+        - GIT COMMIT: `git commit -m "chore(package): add syncpack and version management scripts"`
   
 2. Protect the main branch
    - Option 1: Add Husky (Pre-Commit) for Automation of Git Commit
@@ -229,7 +237,7 @@ Your choice between them should depend on your project's specific needs regardin
        
    - Option 2: Go to the  `Preferences > VS Code Settings` search for the `Git Branch Protection` and add the `main` in the list.
 
-3.  Remove bolierplates, add script for `clean`, running dev with filtering both `docs` and `web`, and setup `syncpack` to manage version of dependencies.
+3.  Remove bolierplates, add script for `clean`, running dev with filtering both `docs` and `web`.
     - Remove boilerplates
       - Delete `page.module.css` and all of code inside of `page.tsx` both on `docs and web`.
       - GIT COMMIT: `git commit -m "refactor(docs, web): delete boilerplates"`
@@ -277,15 +285,7 @@ Your choice between them should depend on your project's specific needs regardin
         "dev:web": "turbo run dev -F web",
         ```
       - GIT COMMIT: `git commit -m "chore(package): add workspace-specific dev scripts"`
-      - Setup Syncpack
-        - Install syncpack in devDependencies in the root `package.json` of your turborepo to manage dependency version mismatches across the turborepo.
-        - Add this two scripts of sycnpack in the root `package.json` of your turborepo, `list-mismatches` to check all dependencies version that mismatches, `fix-mismatches` to fix all version of dependencies that mismatches.
-          ```json
-          "list-mismatches": "bunx syncpack list-mismatches",
-          "fix-mismatches": "bunx syncpack fix-mismatches --",
-          ```
-        - GIT COMMIT: `git commit -m "chore(package): add syncpack and version management scripts"`
-
+        
 4.  Create a Github Repository
     - Add the github repository to the project and push the main branch.
 
