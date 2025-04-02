@@ -295,7 +295,7 @@ Your choice between them should depend on your project's specific needs regardin
     - Configure TypeScript & ESLint
       - Create a new folder named `config` in the root of your project.
       - Move the `typescript-config` and `eslint-config` into the `config` folder.
-      - Rename all instance both `typescript-config` and `eslint-config` into `typescript` and `eslint` and make sure you don't include the `eslint-config-prettier` in renaming all of `eslint-config`.
+      - Rename folder, imports, extends, and dependency both `typescript-config` and `eslint-config` into `typescript` and `eslint` and make sure you don't include the `eslint-config-prettier` in renaming all of `eslint-config`.
       - Create a `internal-library.json` in `config/typescript` directory to centralize custom TypeScript settings for internal libraries.
         ```json
         {
@@ -310,6 +310,8 @@ Your choice between them should depend on your project's specific needs regardin
           }
         }
         ```
+      - After renaming folder, imports, extends, and dependency install again the `typescript` and `eslint` dependencies.
+        CLI: `bun install`
       - Add the `"dist/**"` in `build` task in the `turbo.json` of the root of project.
       - Add the `config` folder to `workspaces` in the `package.json` of the root of your project.
         ```json
