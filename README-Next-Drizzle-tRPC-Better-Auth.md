@@ -531,11 +531,22 @@ Your choice between them should depend on your project's specific needs regardin
           "version": "0.0.0",
           "private": true,
           "exports": {
-            "./lib/*": "./src/lib/*.ts",
-            "./components/*": "./src/components/*.tsx",
-            "./hooks/*": "./src/hooks/*.ts"
+            "./lib/*": {
+              "types": "./dist/lib/*.d.ts",
+              "default": "./dist/lib/*.js"
+            },
+            "./components/*": {
+              "types": "./dist/components/*.d.ts",
+              "default": "./dist/components/*.jsx"
+            },
+            "./hooks/*": {
+              "types": "./dist/hooks/*.d.ts",
+              "default": "./dist/hooks/*.js"
+            }
           },
           "scripts": {
+            "build": "tsc",
+            "dev": "tsc",
             "ui-add": "bunx --bun shadcn@latest add",
             "postui-add": "prettier src --write --list-different",
             "generate:component": "turbo gen react-component",
@@ -569,14 +580,14 @@ Your choice between them should depend on your project's specific needs regardin
       - Edit (or create) the `tsconfig.json` file inside `packages/ui` with the following content.
         ```json
         {
-          "extends": "@craftzcode/typescript/react-library.json",
+          "extends": "@craftzcode/typescript/internal-library.json",
           "compilerOptions": {
-            "baseUrl": ".",
+            "jsx": "preserve",
             "paths": {
-              "@craftzcode/ui/*": ["./src/*"]
+              "@/*": ["./src/*"]
             }
           },
-          "include": ["."],
+          "include": ["src"],
           "exclude": ["node_modules", "dist"]
         }
         ```
@@ -604,11 +615,11 @@ Your choice between them should depend on your project's specific needs regardin
             "prefix": ""
           },
           "aliases": {
-            "components": "@craftzcode/ui/components",
-            "utils": "@craftzcode/ui/lib/utils",
-            "ui": "@craftzcode/ui/components",
-            "lib": "@craftzcode/ui/lib",
-            "hooks": "@craftzcode/ui/hooks"
+            "components": "@/components",
+            "utils": "@/lib/utils",
+            "ui": "src/components",
+            "lib": "@/lib",
+            "hooks": "@/hooks"
           },
           "iconLibrary": "lucide"
         }
