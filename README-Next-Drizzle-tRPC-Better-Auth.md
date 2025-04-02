@@ -310,8 +310,6 @@ Your choice between them should depend on your project's specific needs regardin
           }
         }
         ```
-      - After renaming folder, imports, extends, and dependency install again the `typescript` and `eslint` dependencies.
-        CLI: `bun install`
       - Add the `"dist/**"` in `build` task in the `turbo.json` of the root of project.
       - Add the `config` folder to `workspaces` in the `package.json` of the root of your project.
         ```json
@@ -321,11 +319,10 @@ Your choice between them should depend on your project's specific needs regardin
           "config/*"
         ]
         ```
-      - Reinstall packages.
+      - After renaming folder, imports, extends, and dependency reinstall the `typescript` and `eslint` dependencies.
         - CLI: `bun install`
-    
       - GIT COMMIT: `git commit -m "chore(config): move typescript and eslint configs to config folder"`
-
+        
     - PULL REQUEST TITLE: `chore(infrastructure): add cursor rules, update aliases, and reorganize configs`
 
 6.  Setup Prettier, Tailwind CSS, and Shadcn UI Shared Configs
