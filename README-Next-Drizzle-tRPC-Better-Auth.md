@@ -573,7 +573,7 @@ Your choice between them should depend on your project's specific needs regardin
             }
           },
           "include": ["src"],
-          "exclude": ["node_modules", "dist"]
+          "exclude": ["node_modules"]
         }
         ```
       - Inside `packages/ui/src/lib`, create a file named `utils.ts` with the following content.
