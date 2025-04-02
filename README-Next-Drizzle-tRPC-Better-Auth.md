@@ -531,22 +531,11 @@ Your choice between them should depend on your project's specific needs regardin
           "version": "0.0.0",
           "private": true,
           "exports": {
-            "./lib/*": {
-              "types": "./dist/lib/*.d.ts",
-              "default": "./dist/lib/*.js"
-            },
-            "./components/*": {
-              "types": "./dist/components/*.d.ts",
-              "default": "./dist/components/*.jsx"
-            },
-            "./hooks/*": {
-              "types": "./dist/hooks/*.d.ts",
-              "default": "./dist/hooks/*.js"
-            }
+            "./lib/*": "./src/lib/*.ts",
+            "./components/*": "./src/components/*.tsx",
+            "./hooks/*": "./src/hooks/*.ts"
           },
           "scripts": {
-            "build": "tsc",
-            "dev": "tsc",
             "ui-add": "bunx --bun shadcn@latest add",
             "postui-add": "prettier src --write --list-different",
             "generate:component": "turbo gen react-component",
